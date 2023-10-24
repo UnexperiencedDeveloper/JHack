@@ -1,7 +1,10 @@
 package com.timprogrammiert;
 
+import com.timprogrammiert.host.Host;
+import com.timprogrammiert.terminal.Terminal;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Terminal terminal = new Terminal();
     }
 }
