@@ -17,13 +17,13 @@ public class FileObject {
     protected FileObject(String fileName, FileType fileType, User user, Directory parent) {
         this.fileName = fileName;
         this.fileType = fileType;
-        this.fileMetaData = FileMetaData.createMetaData(user);
+        this.fileMetaData = FileMetaData.createMetaData(user, fileType);
         this.parent = parent;
     }
     protected FileObject(String fileName, FileType fileType, User user) {
         this.fileName = fileName;
         this.fileType = fileType;
-        this.fileMetaData = FileMetaData.createMetaData(user);
+        this.fileMetaData = FileMetaData.createMetaData(user, fileType);
     }
 
     public String getName(){
