@@ -2,9 +2,7 @@ package com.timprogrammiert.filesystem;
 
 
 import com.timprogrammiert.filesystem.directory.Directory;
-import com.timprogrammiert.filesystem.util.DirectoryUtil;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.user.User;
 import com.timprogrammiert.util.FileType;
 
 /**
@@ -25,7 +23,7 @@ public class VirtualFileSystem {
     }
 
     public Directory getBinDirectory(){
-        return null;
+        return (Directory) rootDirectory.getChildrenByName("bin");
     }
     public Directory getVarDirectory(){
         return null;
@@ -40,6 +38,12 @@ public class VirtualFileSystem {
 
         Directory home = Directory.createDirectory("home", FileType.Directory, host.getCurrentUser(), rootDirectory);
         rootDirectory.addNewChildren(home);
+
+        Directory usr = Directory.createDirectory("usr", FileType.Directory, host.getCurrentUser(), rootDirectory);
+        rootDirectory.addNewChildren(usr);
+
+        Directory usrBin = Directory.createDirectory("bin", FileType.Directory, host.getCurrentUser(), rootDirectory);
+        usr.addNewChildren(usrBin);
 
         Directory var = Directory.createDirectory("var", FileType.Directory, host.getCurrentUser(), rootDirectory);
         rootDirectory.addNewChildren(var);

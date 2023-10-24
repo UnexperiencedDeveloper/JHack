@@ -2,7 +2,6 @@ package com.timprogrammiert.terminal;
 
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.path.Path;
-import com.timprogrammiert.filesystem.util.DirectoryUtil;
 import com.timprogrammiert.host.Host;
 
 import java.util.Scanner;
@@ -17,7 +16,7 @@ public class Terminal {
         host = new Host("Tims Pc");
         commandParser = new CommandParser(host);
         // Debug
-        Path path = new Path("tmp/test");
+        Path path = new Path("/tmp/test");
         System.out.println(path.resolvePath(host, Directory.class).getFileType());
         //System.out.println(DirectoryUtil.resolvePath(host, Directory.class, new Path("tmp/test")).getFileType());
         run();

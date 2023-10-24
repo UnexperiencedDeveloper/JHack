@@ -35,13 +35,16 @@ public class Path {
     }
 
     public List<String> getPathToArray(){
-        String[] pathAsArray = pathString.split("/");
-        List<String> pathList = new ArrayList<>(Arrays.asList(pathAsArray));
-
-        // When calling absolute Path like "/etc" theres an empty element at index 0
-        // Need to set this Element to the root Directory manually
-        // Wont happen when calling relative path like "test/testFile"
-        if(pathList.get(0).isEmpty()) pathList.set(0, "/");
+        List<String> pathList;
+        if(pathString.equals("/")){
+            pathList = new ArrayList<>();
+            pathList.add("/");
+        }else {
+            String[] pathAsArray = pathString.split("/");
+            pathList = new ArrayList<>(Arrays.asList(pathAsArray));
+            // When calling absolute Path like "/etc" theres an empty element at index 0
+            if(pathList.get(0).isEmpty()) pathList.set(0, "/");
+        }
         return pathList;
     }
     public <T extends FileObject> T resolvePath(Host host, Class<T> childType){
