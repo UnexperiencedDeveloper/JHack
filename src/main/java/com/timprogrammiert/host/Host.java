@@ -24,7 +24,7 @@ public class Host {
         fileSystem = new VirtualFileSystem(this);
         registeredGroups = new HashSet<>();
         registeredUsers = new HashSet<>();
-        currentDirectory = fileSystem.getBinDirectory();
+        currentDirectory = fileSystem.getRootDirectory();
     }
 
     public String getHostName(){

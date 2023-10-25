@@ -1,7 +1,8 @@
 package com.timprogrammiert.filesystem.executable;
 
-import com.timprogrammiert.filesystem.FileMetaData;
+import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.filesystem.FileObject;
+import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.user.User;
 import com.timprogrammiert.util.FileType;
 
@@ -9,8 +10,18 @@ import com.timprogrammiert.util.FileType;
  * @author tmatz
  */
 public class ExecutableFile extends FileObject {
+    private ICommand command;
 
-    public ExecutableFile(String fileName, FileType fileType, User user) {
-        super(fileName, fileType, user);
+    private ExecutableFile(String fileName, FileType fileType, User user, ICommand command, Directory parent) {
+        super(fileName, fileType, user, parent);
+        this.command = command;
+    }
+
+    public static ExecutableFile createExecutable(String fileName, FileType fileType, User user, ICommand command, Directory parent){
+        return new ExecutableFile(fileName, fileType, user, command, parent);
+    }
+
+    public ICommand getCommand(){
+        return command;
     }
 }

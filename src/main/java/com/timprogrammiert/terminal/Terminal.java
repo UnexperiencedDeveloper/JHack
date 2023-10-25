@@ -1,6 +1,5 @@
 package com.timprogrammiert.terminal;
 
-import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.host.Host;
 
@@ -15,16 +14,12 @@ public class Terminal {
     public Terminal() {
         host = new Host("Tims Pc");
         commandParser = new CommandParser(host);
-        // Debug
-        Path path = new Path("/tmp/test");
-        System.out.println(path.resolvePath(host, Directory.class).getFileType());
-        //System.out.println(DirectoryUtil.resolvePath(host, Directory.class, new Path("tmp/test")).getFileType());
         run();
     }
 
     public void run(){
         Scanner scanner = new Scanner(System.in);
-        String input = null;
+        String input;
         while(true){
             System.out.print(Path.getAbsolutePathByFileObject(host.getCurrentDirectory()) + " ");
             input = scanner.nextLine();

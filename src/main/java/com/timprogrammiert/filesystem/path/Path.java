@@ -11,14 +11,31 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * The {@code Path} class represents a file system path and provides utility methods for working with paths.
+ * It can convert paths to arrays, resolve paths in a simulated file system, and obtain absolute paths based
+ * on a FileObject's parent hierarchy.
+ *
  * @author tmatz
+ * @version 1.0
  */
 public class Path {
     private String pathString;
+
+    /**
+     * Constructs a Path object with the specified path string.
+     *
+     * @param pathString The path string to represent.
+     */
     public Path(String pathString) {
         this.pathString = pathString;
     }
 
+    /**
+     * Get the absolute path of a FileObject based on its parent hierarchy.
+     *
+     * @param fileObject The FileObject for which to determine the absolute path.
+     * @return The absolute path as a string.
+     */
     public static String getAbsolutePathByFileObject(FileObject fileObject){
         List<String> allParents = new ArrayList<>();
         FileObject parent = fileObject;
@@ -34,6 +51,11 @@ public class Path {
         return "/" + absolutePath;
     }
 
+    /**
+     * Convert the path string to an array of path components.
+     *
+     * @return A list of path components as strings.
+     */
     public List<String> getPathToArray(){
         List<String> pathList;
         if(pathString.equals("/")){
@@ -47,6 +69,15 @@ public class Path {
         }
         return pathList;
     }
+
+    /**
+     * Resolve a path in a simulated file system, returning a FileObject of a specified child type.
+     *
+     * @param host      The host environment containing the file system.
+     * @param childType The class type of the desired child object.
+     * @param <T>       A type parameter representing the child type.
+     * @return A FileObject of the specified child type representing the resolved path.
+     */
     public <T extends FileObject> T resolvePath(Host host, Class<T> childType){
         // Absolute Path will start with "/", relative Path not
         // If its absoute, then start Object is rootDirectory

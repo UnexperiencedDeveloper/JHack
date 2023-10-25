@@ -1,7 +1,10 @@
 package com.timprogrammiert.filesystem;
 
 
+import com.timprogrammiert.commands.ICommand;
+import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.filesystem.directory.Directory;
+import com.timprogrammiert.filesystem.executable.ExecutableFile;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.FileType;
 
@@ -32,6 +35,14 @@ public class VirtualFileSystem {
     private void setupFilesystemStructure(){
         Directory bin = Directory.createDirectory("bin", FileType.Directory, host.getCurrentUser(), rootDirectory);
         rootDirectory.addNewChildren(bin);
+
+        ICommand lsCommand = new LsCommand();
+        ExecutableFile ls = ExecutableFile.createExecutable("ls",
+                FileType.Executable,
+                host.getCurrentUser(),
+                lsCommand,
+                bin);
+        bin.addNewChildren(ls);
 
         Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getCurrentUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
