@@ -1,7 +1,6 @@
 package com.timprogrammiert.terminal;
 
 import com.timprogrammiert.commands.ICommand;
-import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.filesystem.executable.ExecutableFile;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.host.Host;
@@ -37,11 +36,6 @@ public class CommandParser {
         commandMap = new HashMap<>();
         this.host = host;
         this.currentUser = this.host.getCurrentUser();
-        //initCommands();
-    }
-    private void initCommands(){
-        ICommand lsCommand = new LsCommand();
-        commandMap.put("ls", lsCommand);
     }
 
     /**
@@ -60,9 +54,34 @@ public class CommandParser {
      * @param args The array of command arguments provided by the user.
      */
     public void parseCommand(String[] args){
-        // Extract the path from the command arguments (element 0 is the command name, absolute or relative)
-        Path path = new Path(args[0]);
-        // Resolve the path and execute the corresponding command
-        path.resolvePath(host, ExecutableFile.class).getCommand().execute(substractCommandName(args), host);
+        // Extract the command name from the arguments (element 0 is the command name, absolute or relative)
+        String commandName = args[0];
+
+        // Attempt to resolve the command using the given command name
+        ICommand commandToExecute = resolveCommand(commandName);
+
+        // If the command is not found in the given path, Iterate through environment paths and attempt command resolution
+        if(commandToExecute == null){
+            for(String envPath : Path.EnvironmentVariable.split(":")){
+                commandToExecute = resolveCommand(envPath + "/" + commandName);
+                // If command is found, execute it and break the loop
+                if(commandToExecute != null) {
+                    commandToExecute.execute(substractCommandName(args), host);
+                    break;
+                }else {
+                    System.out.println("Command not found - There should be an Exception. Called From Command Parser");
+                    return;
+                }
+            }
+        }else {
+            // Command was found in given Path
+            commandToExecute.execute(substractCommandName(args), host);
+        }
+    }
+
+    private ICommand resolveCommand(String commandPath){
+        Path path = new Path(commandPath);
+        ExecutableFile executableFile = path.resolvePath(host, ExecutableFile.class);
+        return (executableFile != null) ? executableFile.getCommand() : null;
     }
 }

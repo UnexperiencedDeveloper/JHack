@@ -44,6 +44,15 @@ public class VirtualFileSystem {
                 bin);
         bin.addNewChildren(ls);
 
+        ICommand cdCommand = new LsCommand();
+        ExecutableFile cd = ExecutableFile.createExecutable("cd",
+                FileType.Executable,
+                host.getCurrentUser(),
+                cdCommand,
+                bin);
+        bin.addNewChildren(cd);
+
+
         Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getCurrentUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
 

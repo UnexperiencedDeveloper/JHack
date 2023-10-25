@@ -19,6 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 public class Path {
+    public static String EnvironmentVariable = "/bin:/usr/bin";
     private String pathString;
 
     /**
@@ -80,7 +81,7 @@ public class Path {
      */
     public <T extends FileObject> T resolvePath(Host host, Class<T> childType){
         // Absolute Path will start with "/", relative Path not
-        // If its absoute, then start Object is rootDirectory
+        // If its absolute, then start Object is rootDirectory
         FileObject recursiveObject = (getPathToArray().get(0).equals("/")) ? host.getRootDirectory() : host.getCurrentDirectory();
         for (String fileObjectName : getPathToArray()) {
             if (fileObjectName.equals("/")) continue;
