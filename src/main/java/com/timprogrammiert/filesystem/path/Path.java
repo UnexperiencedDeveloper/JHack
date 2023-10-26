@@ -54,25 +54,6 @@ public class Path {
     }
 
     /**
-     * Convert the path string to an array of path components.
-     *
-     * @return A list of path components as strings.
-     */
-    public List<String> getPathToArray(){
-        List<String> pathList;
-        if(pathString.equals("/")){
-            pathList = new ArrayList<>();
-            pathList.add("/");
-        }else {
-            String[] pathAsArray = pathString.split("/");
-            pathList = new ArrayList<>(Arrays.asList(pathAsArray));
-            // When calling absolute Path like "/etc" theres an empty element at index 0
-            if(pathList.get(0).isEmpty()) pathList.set(0, "/");
-        }
-        return pathList;
-    }
-
-    /**
      * Resolve a path in a simulated file system, returning a FileObject of a specified child type.
      *
      * @param host      The host environment containing the file system.
@@ -100,5 +81,24 @@ public class Path {
             return null;
         }
 
+    }
+
+    /**
+     * Convert the path string to an array of path components.
+     *
+     * @return A list of path components as strings.
+     */
+    private List<String> getPathToArray(){
+        List<String> pathList;
+        if(pathString.equals("/")){
+            pathList = new ArrayList<>();
+            pathList.add("/");
+        }else {
+            String[] pathAsArray = pathString.split("/");
+            pathList = new ArrayList<>(Arrays.asList(pathAsArray));
+            // When calling absolute Path like "/etc" theres an empty element at index 0
+            if(pathList.get(0).isEmpty()) pathList.set(0, "/");
+        }
+        return pathList;
     }
 }
