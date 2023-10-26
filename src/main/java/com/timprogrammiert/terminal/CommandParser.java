@@ -50,6 +50,10 @@ public class CommandParser {
 
         // Extract the command name from the arguments (element 0 is the command name, absolute or relative)
         String commandName = args[0];
+        if(commandName.isEmpty()) {
+            // Do nothing
+            return;
+        }
 
         // Attempt to resolve the command using the given command name
         ICommand commandToExecute = resolveCommand(commandName);
@@ -73,7 +77,7 @@ public class CommandParser {
                 commandToExecute.execute(substractCommandName(args), host);
             }
         } catch (CommandExecutionException e) {
-            System.out.println(e.getMessage());
+            System.out.print(e.getMessage());
         }
 
     }
