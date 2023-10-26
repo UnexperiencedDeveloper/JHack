@@ -9,7 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Represents a host system in a virtual environment. It contains information about the host's file system,
+ * registered users, registered user groups, hostname, current working directory, and the currently logged-in user.
+ * This class is responsible for managing the state of the host system.
+ *
  * @author tmatz
+ * @version 1.0
  */
 public class Host {
     private final VirtualFileSystem fileSystem;
@@ -18,9 +23,12 @@ public class Host {
     private final String hostName;
     private Directory currentDirectory;
     private User currentUser;
+    private User rootUser;
 
     public Host(String hostName) {
         this.hostName = hostName;
+        rootUser = createNewUser("root");
+        currentUser = createNewUser("tim");
         fileSystem = new VirtualFileSystem(this);
         registeredGroups = new HashSet<>();
         registeredUsers = new HashSet<>();
@@ -47,5 +55,14 @@ public class Host {
         return currentUser;
     }
 
+    public User createNewUser(String userName){
+        UserGroup newGroup = new UserGroup(userName); // Each user has its own Group
+        User newUser = new User(userName, newGroup);
+        newGroup.addUser(newUser);
+        return newUser;
+    }
 
+    public User getRootUser() {
+        return rootUser;
+    }
 }
