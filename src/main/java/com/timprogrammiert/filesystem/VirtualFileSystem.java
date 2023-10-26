@@ -2,6 +2,7 @@ package com.timprogrammiert.filesystem;
 
 
 import com.timprogrammiert.commands.ICommand;
+import com.timprogrammiert.commands.cd.CdCommand;
 import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.executable.ExecutableFile;
@@ -44,7 +45,7 @@ public class VirtualFileSystem {
                 bin);
         bin.addNewChildren(ls);
 
-        ICommand cdCommand = new LsCommand();
+        ICommand cdCommand = new CdCommand();
         ExecutableFile cd = ExecutableFile.createExecutable("cd",
                 FileType.Executable,
                 host.getRootUser(),
