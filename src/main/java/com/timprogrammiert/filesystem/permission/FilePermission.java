@@ -8,8 +8,8 @@ import com.timprogrammiert.util.FileType;
  * @author tmatz
  */
 public class FilePermission {
-    public static String DEFAULT_FILE_PERMISSION = "rw-rw-rw-";
-    public static String DEFAULT_EXECUTABLE_PERMISSION = "rwxr-xr-x";
+    public static String DEFAULT_FILE_PERMISSION = "-rw-rw-rw-";
+    public static String DEFAULT_EXECUTABLE_PERMISSION = "-rwxr-xr-x";
     public static String DEFAULT_DIRECTORY_PERMISSION = "drwxrwxrwx";
 
     private String permissionString;

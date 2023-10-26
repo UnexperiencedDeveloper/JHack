@@ -2,11 +2,13 @@ package com.timprogrammiert.commands.ls;
 
 import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.commands.exceptions.CommandExecutionException;
+import com.timprogrammiert.commands.exceptions.PermissionDeniedException;
 import com.timprogrammiert.filesystem.FileMetaData;
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
+import com.timprogrammiert.filesystem.permission.PermissionChecker;
 import com.timprogrammiert.host.Host;
 
 import java.util.ArrayList;
@@ -36,31 +38,34 @@ public class LsCommand implements ICommand {
     /**
      * Executes the 'ls' command based on the provided arguments and the current host environment.
      *
-     * @param args An array of command arguments. If empty, lists the contents of the current directory.
-     *             If contains a path, lists the contents of the specified directory.
-     * @param host The host environment in which the command is executed.
+     * @param args The command arguments, where the first argument (if provided) is the path to the directory.
+     * @param host The Host object representing the system state.
+     * @throws CommandExecutionException If there is an error executing the command.
      */
     @Override
     public void execute(String[] args, Host host) throws CommandExecutionException {
         this.host = host;
         List<String> argList = parseArgumentsForTags(new ArrayList<>(Arrays.asList(args)));
-
-        if(argList.isEmpty()){
-            listCurrentDirectory();
-        }else{
-            path = new Path(argList.get(0));
-            try {
+        try {
+            if(argList.isEmpty()){
+                // If no specific path provided, list files and directories in the current directory
+                listCurrentDirectory();
+            }else {
+                path = new Path(argList.get(0));
                 listAllChildren(path.resolvePath(host, Directory.class));
+            }
+
+            }catch (PermissionDeniedException e){
+                System.out.println(e.getMessage());
             }catch (FileObjectNotFoundException e){
                 throw new CommandExecutionException(commandName + ": " + e.getMessage());
             }
-        }
     }
 
     /**
      * Lists the contents of the current directory in the host environment.
      */
-    private void listCurrentDirectory() {
+    private void listCurrentDirectory() throws PermissionDeniedException {
         listAllChildren(host.getCurrentDirectory());
     }
 
@@ -69,12 +74,17 @@ public class LsCommand implements ICommand {
      *
      * @param baseItem The base directory whose contents need to be listed.
      */
-    private void listAllChildren(FileObject baseItem){
+    private void listAllChildren(FileObject baseItem) throws PermissionDeniedException {
         StringBuilder stringBuilder = new StringBuilder();
         if(baseItem instanceof Directory directoryObject){
             Collection<FileObject> children = directoryObject.getAllChildren();
             for (FileObject object: children) {
+                PermissionChecker pemChecker = new PermissionChecker(object, host.getCurrentUser());
+                if(!pemChecker.isCanRead()){
+                    throw new PermissionDeniedException(String.format("%s: cannot open directory '/%s': permission denied", commandName, object.getName()));
+                }
                 if(detailedList){
+                    // Append detailed file information: permissions, user, group, size, modification timestamp, and name
                     FileMetaData metaData = object.getFileMetaData();
                     stringBuilder.append(metaData.getFilePermission().getPermissionString()).append(" ")
                             .append(metaData.getFilePermission().getUser().getUserName()).append(" ")
@@ -83,9 +93,11 @@ public class LsCommand implements ICommand {
                             .append(metaData.getModifiedTimeStamp()).append(" ")
                             .append(object.getName()).append("\n");
                 }else {
+                    // Append only the names of files/directories
                     stringBuilder.append(object.getName()).append("\n");
                 }
             }
+            // Print the list of children (detailed or simple) to the console
             System.out.println(stringBuilder.toString().strip());
         }
         detailedList = false;
