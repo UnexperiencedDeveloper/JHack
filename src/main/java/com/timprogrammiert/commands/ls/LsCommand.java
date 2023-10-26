@@ -97,8 +97,11 @@ public class LsCommand implements ICommand {
                     stringBuilder.append(object.getName()).append("\n");
                 }
             }
-            // Print the list of children (detailed or simple) to the console
-            System.out.println(stringBuilder.toString().strip());
+            // Print the list of children (detailed or simple) to the console if its not empty
+            if(!stringBuilder.toString().isEmpty()){
+                System.out.println(stringBuilder.toString().strip());
+            }
+
         }
         detailedList = false;
     }
