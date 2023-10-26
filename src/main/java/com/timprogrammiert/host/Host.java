@@ -4,8 +4,10 @@ import com.timprogrammiert.filesystem.VirtualFileSystem;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.user.User;
 import com.timprogrammiert.user.UserGroup;
+import com.timprogrammiert.util.FileType;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -18,21 +20,23 @@ import java.util.Set;
  */
 public class Host {
     private final VirtualFileSystem fileSystem;
-    private final Set<User> registeredUsers;
-    private final Set<UserGroup> registeredGroups;
     private final String hostName;
     private Directory currentDirectory;
-    private User currentUser;
+    private User currentUser; // TO BE REPLACED WITH USERMANAGER
     private User rootUser;
+    private UserManager userManager;
 
     public Host(String hostName) {
         this.hostName = hostName;
-        rootUser = createNewUser("root");
-        currentUser = createNewUser("tim");
+        rootUser = createRootUser();
         fileSystem = new VirtualFileSystem(this);
-        registeredGroups = new HashSet<>();
-        registeredUsers = new HashSet<>();
+        userManager = new UserManager(fileSystem);
+        currentUser = createNewUser("tim"); // TO BE REPLACED WITH USERMANAGER
         currentDirectory = fileSystem.getRootDirectory();
+        createNewUser("testUser");
+    }
+    public void setCurrentDirectory(Directory currentDirectory){
+        this.currentDirectory = currentDirectory;
     }
 
     public String getHostName(){
@@ -54,15 +58,21 @@ public class Host {
     public User getCurrentUser(){
         return currentUser;
     }
-
     public User createNewUser(String userName){
-        UserGroup newGroup = new UserGroup(userName); // Each user has its own Group
-        User newUser = new User(userName, newGroup);
-        newGroup.addUser(newUser);
-        return newUser;
+        return userManager.createNewUser(userName);
     }
 
     public User getRootUser() {
         return rootUser;
     }
+
+    private User createRootUser(){
+        UserGroup rootGroup = new UserGroup("root"); // Each user has its own Group
+        rootGroup.setGid(0);
+        User rootUser = new User("root", rootGroup);
+        rootUser.setUid(0);
+        rootGroup.addUser(rootUser);
+        return rootUser;
+    }
+
 }

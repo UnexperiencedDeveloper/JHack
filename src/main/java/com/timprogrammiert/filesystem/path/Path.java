@@ -77,8 +77,7 @@ public class Path {
         }catch (NullPointerException e){
             throw new FileObjectNotFoundException(e.getMessage());
         }catch (ClassCastException e){
-            e.printStackTrace();
-            return null;
+            throw new FileObjectNotFoundException(e.getMessage() + " ClassCastException occured");
         }
 
     }

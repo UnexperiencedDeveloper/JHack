@@ -24,4 +24,12 @@ public class UserGroup {
     public String getGroupName() {
         return groupName;
     }
+
+    public void setGid(int gid){
+        this.gid = gid;
+    }
+
+    public int getGid() {
+        return gid;
+    }
 }

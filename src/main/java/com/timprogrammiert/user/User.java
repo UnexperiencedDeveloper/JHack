@@ -1,6 +1,6 @@
 package com.timprogrammiert.user;
 
-import java.util.HashSet;
+import com.timprogrammiert.filesystem.directory.Directory;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,6 +15,7 @@ public class User {
     private UserGroup primaryGroup;          // The user's primary group
     private Set<UserGroup> secondaryGroups;  // Set of secondary groups the user belongs to
     private int uid;                         // User ID (unique identifier)
+    private Directory homeDirectory;
 
     /**
      * Constructor to initialize a User object with a username and primary group.
@@ -62,5 +63,21 @@ public class User {
      */
     public UserGroup getPrimaryGroup() {
         return primaryGroup;
+    }
+
+    public void setHomeDirectory(Directory homeDirectory){
+        this.homeDirectory = homeDirectory;
+    }
+
+    public Directory getHomeDirectory() {
+        return homeDirectory;
+    }
+
+    public void setUid(int uid){
+        this.uid = uid;
+    }
+
+    public int getUid() {
+        return uid;
     }
 }
