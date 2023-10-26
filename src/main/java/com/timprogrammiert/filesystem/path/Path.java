@@ -2,6 +2,7 @@ package com.timprogrammiert.filesystem.path;
 
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
+import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.FileType;
 
@@ -79,17 +80,25 @@ public class Path {
      * @param <T>       A type parameter representing the child type.
      * @return A FileObject of the specified child type representing the resolved path.
      */
-    public <T extends FileObject> T resolvePath(Host host, Class<T> childType){
-        // Absolute Path will start with "/", relative Path not
-        // If its absolute, then start Object is rootDirectory
-        FileObject recursiveObject = (getPathToArray().get(0).equals("/")) ? host.getRootDirectory() : host.getCurrentDirectory();
-        for (String fileObjectName : getPathToArray()) {
-            if (fileObjectName.equals("/")) continue;
-            if(recursiveObject.getFileType().equals(FileType.Directory)){
-                // TODO add Logic if File does not exist
-                recursiveObject = ((Directory) recursiveObject).getChildrenByName(fileObjectName);
+    public <T extends FileObject> T resolvePath(Host host, Class<T> childType) throws FileObjectNotFoundException {
+
+        try {
+            // Absolute Path will start with "/", relative Path not
+            // If its absolute, then start Object is rootDirectory
+            FileObject recursiveObject = (getPathToArray().get(0).equals("/")) ? host.getRootDirectory() : host.getCurrentDirectory();
+            for (String fileObjectName : getPathToArray()) {
+                if (fileObjectName.equals("/")) continue;
+                if(recursiveObject.getFileType().equals(FileType.Directory)){
+                    recursiveObject = ((Directory) recursiveObject).getChildrenByName(fileObjectName);
+                }
             }
+            return childType.cast(recursiveObject);
+        }catch (NullPointerException e){
+            throw new FileObjectNotFoundException(e.getMessage());
+        }catch (ClassCastException e){
+            e.printStackTrace();
+            return null;
         }
-        return childType.cast(recursiveObject);
+
     }
 }

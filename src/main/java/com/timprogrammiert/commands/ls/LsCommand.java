@@ -1,8 +1,11 @@
 package com.timprogrammiert.commands.ls;
 
 import com.timprogrammiert.commands.ICommand;
+import com.timprogrammiert.commands.exceptions.CommandExecutionException;
+import com.timprogrammiert.filesystem.FileMetaData;
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
+import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.host.Host;
 
@@ -28,6 +31,7 @@ public class LsCommand implements ICommand {
     private Host host; // The host environment in which the command is executed
     private boolean detailedList = false; // Flag indicating whether detailed listing is requested
     private Path path; // The path of the directory to list (optional) only set if not the current directory to list
+    private String commandName = "ls";
 
     /**
      * Executes the 'ls' command based on the provided arguments and the current host environment.
@@ -37,7 +41,7 @@ public class LsCommand implements ICommand {
      * @param host The host environment in which the command is executed.
      */
     @Override
-    public void execute(String[] args, Host host) {
+    public void execute(String[] args, Host host) throws CommandExecutionException {
         this.host = host;
         List<String> argList = parseArgumentsForTags(new ArrayList<>(Arrays.asList(args)));
 
@@ -45,7 +49,11 @@ public class LsCommand implements ICommand {
             listCurrentDirectory();
         }else{
             path = new Path(argList.get(0));
-            listAllChildren(path.resolvePath(host, Directory.class));
+            try {
+                listAllChildren(path.resolvePath(host, Directory.class));
+            }catch (FileObjectNotFoundException e){
+                throw new CommandExecutionException(commandName + ": " + e.getMessage());
+            }
         }
     }
 
@@ -66,10 +74,21 @@ public class LsCommand implements ICommand {
         if(baseItem instanceof Directory directoryObject){
             Collection<FileObject> children = directoryObject.getAllChildren();
             for (FileObject object: children) {
-                stringBuilder.append(object.getName()).append("\n");
+                if(detailedList){
+                    FileMetaData metaData = object.getFileMetaData();
+                    stringBuilder.append(metaData.getFilePermission().getPermissionString()).append(" ")
+                            .append(metaData.getFilePermission().getUser().getUserName()).append(" ")
+                            .append(metaData.getFilePermission().getUserGroup().getGroupName()).append(" ")
+                            .append("FileSize").append(" ")
+                            .append(metaData.getModifiedTimeStamp()).append(" ")
+                            .append(object.getName()).append("\n");
+                }else {
+                    stringBuilder.append(object.getName()).append("\n");
+                }
             }
             System.out.println(stringBuilder.toString().strip());
         }
+        detailedList = false;
     }
 
     /**

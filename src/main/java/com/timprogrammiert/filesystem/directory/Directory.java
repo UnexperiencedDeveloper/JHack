@@ -31,7 +31,10 @@ public class Directory extends FileObject {
         this.children = new HashMap<>();
     }
 
-    public FileObject getChildrenByName(String childrenName){
+    public FileObject getChildrenByName(String childrenName) throws NullPointerException{
+        if(children.get(childrenName) == null){
+            throw new NullPointerException(String.format("cannot access '%s': no such file or directory", childrenName));
+        }
         return children.get(childrenName);
     }
 
@@ -40,6 +43,7 @@ public class Directory extends FileObject {
     }
 
     public boolean addNewChildren(FileObject childrenObject){
+        // TODO EXCEPTION IF CHILDREN ALREADY EXISTS
         if(children.containsKey(childrenObject.getName())){
             return false;
         }else {
