@@ -29,5 +29,23 @@ public class FileMetaData {
         return new FileMetaData(user, fileType);
     }
 
+    public LocalDateTime getAccessedTimeStamp() {
+        return accessedTimeStamp;
+    }
 
+    public LocalDateTime getCreatedTimeStamp() {
+        return createdTimeStamp;
+    }
+
+    public LocalDateTime getModifiedTimeStamp() {
+        return modifiedTimeStamp;
+    }
+
+    public FilePermission getFilePermission() {
+        return filePermission;
+    }
+
+    public String getFileSize() {
+        return fileSize;
+    }
 }

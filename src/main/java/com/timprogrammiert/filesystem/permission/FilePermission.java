@@ -14,11 +14,12 @@ public class FilePermission {
 
     private String permissionString;
     private final User user;
-    private UserGroup userGroup;
+    private final UserGroup userGroup;
 
     private FilePermission(String permissionString, User user) {
         this.permissionString = permissionString;
         this.user = user;
+        userGroup = user.getPrimaryGroup();
     }
 
     public static FilePermission createPermission(User user, FileType fileType){
@@ -35,6 +36,10 @@ public class FilePermission {
 
     public void setPermissionString(){
 
+    }
+
+    public String getPermissionString() {
+        return permissionString;
     }
 
     public User getUser(){
