@@ -2,10 +2,13 @@ package com.timprogrammiert.filesystem;
 
 
 import com.timprogrammiert.commands.ICommand;
+import com.timprogrammiert.commands.cat.CatCommand;
 import com.timprogrammiert.commands.cd.CdCommand;
+import com.timprogrammiert.commands.echo.EchoCommand;
 import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.executable.ExecutableFile;
+import com.timprogrammiert.filesystem.regularFile.RegularFile;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.FileType;
 
@@ -14,6 +17,7 @@ import com.timprogrammiert.util.FileType;
  */
 public class VirtualFileSystem {
     private final Directory rootDirectory;
+    private Directory homeDirectory;
     private final Host host;
 
     public VirtualFileSystem(Host host) {
@@ -21,16 +25,20 @@ public class VirtualFileSystem {
         rootDirectory = Directory.createRootDirectory("/", FileType.Directory, host.getRootUser());
         setupFilesystemStructure();
     }
-
     public Directory getRootDirectory(){
         return rootDirectory;
     }
+    public Directory getHomeDirectory(){return homeDirectory;}
 
     public Directory getBinDirectory(){
         return (Directory) rootDirectory.getChildrenByName("bin");
     }
     public Directory getVarDirectory(){
         return null;
+    }
+
+    public Host getHost() {
+        return host;
     }
 
     private void setupFilesystemStructure(){
@@ -53,12 +61,30 @@ public class VirtualFileSystem {
                 bin);
         bin.addNewChildren(cd);
 
+        ICommand echoCommand = new EchoCommand();
+        ExecutableFile echo = ExecutableFile.createExecutable("echo",
+                FileType.Executable,
+                host.getRootUser(),
+                echoCommand,
+                bin);
+        bin.addNewChildren(echo);
+
+        ICommand catCommand = new CatCommand();
+        ExecutableFile cat = ExecutableFile.createExecutable("cat",
+                FileType.Executable,
+                host.getRootUser(),
+                catCommand,
+                bin);
+        bin.addNewChildren(cat);
 
         Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
 
-        Directory home = Directory.createDirectory("home", FileType.Directory, host.getRootUser(), rootDirectory);
-        rootDirectory.addNewChildren(home);
+        RegularFile passwd = RegularFile.createRegularFile("passwd", FileType.RegularFile, host.getRootUser(), etc);
+        etc.addNewChildren(passwd);
+
+        homeDirectory = Directory.createDirectory("home", FileType.Directory, host.getRootUser(), rootDirectory);
+        rootDirectory.addNewChildren(homeDirectory);
 
         Directory usr = Directory.createDirectory("usr", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(usr);
@@ -71,9 +97,6 @@ public class VirtualFileSystem {
 
         Directory tmp = Directory.createDirectory("tmp", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(tmp);
-
-        Directory test = Directory.createDirectory("test", FileType.Directory, host.getRootUser(), tmp);
-        tmp.addNewChildren(test);
 
 
     }
