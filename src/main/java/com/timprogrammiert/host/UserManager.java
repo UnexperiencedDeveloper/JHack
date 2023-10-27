@@ -52,7 +52,7 @@ public class UserManager {
         User userToCreate = new User(userName, primaryGroupForUser);
 
         // Assign unique UID and GID
-        int uidCounter = registeredUsers.size() + 1;
+        int uidCounter = registeredUsers.size() + 1000;
         userToCreate.setUid(uidCounter);
         primaryGroupForUser.setGid(uidCounter);
 
