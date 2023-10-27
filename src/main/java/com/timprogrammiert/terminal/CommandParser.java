@@ -77,7 +77,7 @@ public class CommandParser {
                 commandToExecute.execute(substractCommandName(args), host);
             }
         } catch (CommandExecutionException e) {
-            System.out.print(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
     }
