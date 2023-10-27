@@ -29,7 +29,7 @@ public class EtcPasswdManager {
                 .append("x").append(":")
                 .append(user.getUid()).append(":")
                 .append(user.getPrimaryGroup().getGid()).append(":")
-                .append(Path.getAbsolutePathByFileObject(user.getHomeDirectory()));
+                .append(Path.getAbsolutePathByFileObject(user.getHomeDirectory())).append("\n");
         etcPasswdFile.appendContent(contentString.toString());
     }
 }
