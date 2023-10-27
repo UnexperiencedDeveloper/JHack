@@ -22,8 +22,6 @@ import java.util.Set;
 public class UserManager {
     private Set<User> registeredUsers;
     private Set<UserGroup> registeredGroups;
-    private User rootUser;
-    private User currentUser;
     private VirtualFileSystem fileSystem;
     private EtcPasswdManager etcPasswdManager;
 
@@ -42,30 +40,30 @@ public class UserManager {
 
     }
     /**
-     * Creates a new user with the given username, assigns a primary user group, sets UID and GID,
-     * creates a home directory, and writes user data to the `/etc/passwd` file.
+     * Creates a new user with the given username. This function creates a new user group for the user,
+     * assigns a unique UID and GID, creates a home directory, writes the user data to the `/etc/passwd` file,
+     * and adds the new user and its primary group to the registered users and groups.
      *
      * @param userName The username of the new user.
-     * @return The newly created user object.
+     * @return The newly created User object.
      */
     public User createNewUser(String userName){
         UserGroup primaryGroupForUser = new UserGroup(userName);
         User userToCreate = new User(userName, primaryGroupForUser);
+
+        // Assign unique UID and GID
         int uidCounter = registeredUsers.size() + 1;
         userToCreate.setUid(uidCounter);
         primaryGroupForUser.setGid(uidCounter);
+
         userToCreate.setHomeDirectory(createHomeDirectory(userToCreate));
+
         etcPasswdManager.writeNewUser(userToCreate);
 
+        // Add the new user and its primary group to the registered users and groups
         registeredUsers.add(userToCreate);
         registeredGroups.add(primaryGroupForUser);
         return userToCreate;
-    }
-    public User getCurrentUser(){
-        return currentUser;
-    }
-    public User getRootUser() {
-        return rootUser;
     }
 
     /**

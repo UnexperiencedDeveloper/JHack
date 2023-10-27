@@ -33,7 +33,7 @@ public class LsCommand implements ICommand {
     private Host host; // The host environment in which the command is executed
     private boolean detailedList = false; // Flag indicating whether detailed listing is requested
     private Path path; // The path of the directory to list (optional) only set if not the current directory to list
-    private String commandName = "ls";
+    private final String commandName = "ls";
 
     /**
      * Executes the 'ls' command based on the provided arguments and the current host environment.

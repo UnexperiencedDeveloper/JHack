@@ -31,7 +31,7 @@ public class Host {
         rootUser = createRootUser();
         fileSystem = new VirtualFileSystem(this);
         userManager = new UserManager(fileSystem);
-        currentUser = createNewUser("tim"); // TO BE REPLACED WITH USERMANAGER
+        currentUser = createNewUser("tim");
         currentDirectory = fileSystem.getRootDirectory();
         createNewUser("testUser");
     }

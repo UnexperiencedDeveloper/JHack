@@ -77,6 +77,7 @@ public class FileObject {
      * @return The parent directory of the file.
      */
     public Directory getParent(){
+        // TODO HANDLE IF NO PARENT EXISTS, LIKE FOR ROOT DIRECTORY
         return parent;
     }
 
