@@ -1,6 +1,7 @@
 package com.timprogrammiert.filesystem.permission;
 
 import com.timprogrammiert.filesystem.FileObject;
+import com.timprogrammiert.host.Host;
 import com.timprogrammiert.user.User;
 
 /**
@@ -12,10 +13,18 @@ public class PermissionChecker {
     private boolean canRead;
     private boolean canWrite;
     private boolean canExecute;
+    private Host host;
 
     public PermissionChecker(FileObject fileObject, User currentUser) {
         this.fileObject = fileObject;
         this.currentUser = currentUser;
+        extractPermissions();
+    }
+
+    public PermissionChecker(FileObject fileObject, User currentUser, Host host) {
+        this.fileObject = fileObject;
+        this.currentUser = currentUser;
+        this.host = host;
         extractPermissions();
     }
 
@@ -37,6 +46,7 @@ public class PermissionChecker {
         String groupPermission = permissionString.substring(4,7);
         String otherPermission = permissionString.substring(7,10);
 
+        //TODO if current User root -> access granted doenst matter which permissions set
         if(currentUser.equals(fileObject.getFileMetaData().getFilePermission().getUser())){
             // User is owner
             setPermission(ownerPermission);

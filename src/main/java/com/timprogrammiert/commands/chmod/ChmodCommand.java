@@ -6,7 +6,7 @@ import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.filesystem.permission.FilePermission;
-import com.timprogrammiert.filesystem.permission.PermissionCreater;
+import com.timprogrammiert.filesystem.permission.PermissionUtil;
 import com.timprogrammiert.host.Host;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ChmodCommand implements ICommand {
             path = new Path(argList.get(1));
             FileObject targetFile = path.resolvePath(host, FileObject.class);
             FilePermission filePermission = targetFile.getFileMetaData().getFilePermission();
-            targetFile.getFileMetaData().setFilePermission(PermissionCreater.changePermission(filePermission, permissionNumber));
+            targetFile.getFileMetaData().setFilePermission(PermissionUtil.changePermission(filePermission, permissionNumber));
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         } catch (FileObjectNotFoundException e) {
