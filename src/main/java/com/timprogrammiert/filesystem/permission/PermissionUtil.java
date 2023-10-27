@@ -5,7 +5,6 @@ package com.timprogrammiert.filesystem.permission;
  */
 public class PermissionUtil {
     public static FilePermission changePermission(FilePermission originalPermission, int permissionNumber){
-        // permissionNumber can like in linux 700, 777, 655
         if(permissionNumber == 0){
             originalPermission.setPermissionString("---------");
         }else {
@@ -21,33 +20,16 @@ public class PermissionUtil {
     }
 
     private static String determinePermission(int permissionNumber){
-        String pemString = "";
-        switch (permissionNumber){
-            case 0:
-                pemString =  "---";
-                break;
-            case 1:
-                pemString = "--x";
-                break;
-            case 2:
-                pemString = "-w-";
-                break;
-            case 3:
-                pemString = "-wx";
-                break;
-            case 4:
-                pemString = "r--";
-                break;
-            case 5:
-                pemString = "r-x";
-                break;
-            case 6:
-                pemString = "rw-";
-                break;
-            case 7:
-                pemString = "rwx";
-                break;
-        }
-        return pemString;
+        return switch (permissionNumber) {
+            case 0 -> "---";
+            case 1 -> "--x";
+            case 2 -> "-w-";
+            case 3 -> "-wx";
+            case 4 -> "r--";
+            case 5 -> "r-x";
+            case 6 -> "rw-";
+            case 7 -> "rwx";
+            default -> "";
+        };
     }
 }

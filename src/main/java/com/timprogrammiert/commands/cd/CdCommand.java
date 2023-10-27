@@ -45,7 +45,7 @@ public class CdCommand implements ICommand {
 
     private void changeDirectory(Directory directoryToCd) throws CommandExecutionException {
         try {
-            PermissionChecker pemChecker = new PermissionChecker(directoryToCd, host.getCurrentUser());
+            PermissionChecker pemChecker = new PermissionChecker(directoryToCd, host);
             // Directories needs Execute Permission to Cd in
             if(pemChecker.isCanExecute()){
                 host.setCurrentDirectory(directoryToCd);

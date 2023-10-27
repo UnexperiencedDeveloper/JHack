@@ -21,10 +21,10 @@ public class PermissionChecker {
         extractPermissions();
     }
 
-    public PermissionChecker(FileObject fileObject, User currentUser, Host host) {
+    public PermissionChecker(FileObject fileObject, Host host) {
         this.fileObject = fileObject;
-        this.currentUser = currentUser;
         this.host = host;
+        this.currentUser = host.getCurrentUser();
         extractPermissions();
     }
 
@@ -46,7 +46,11 @@ public class PermissionChecker {
         String groupPermission = permissionString.substring(4,7);
         String otherPermission = permissionString.substring(7,10);
 
-        //TODO if current User root -> access granted doenst matter which permissions set
+        // Root always full access
+        if(host.getCurrentUser().equals(host.getRootUser())) {
+            setPermission("rwx");
+            return;
+        }
         if(currentUser.equals(fileObject.getFileMetaData().getFilePermission().getUser())){
             // User is owner
             setPermission(ownerPermission);
