@@ -77,12 +77,13 @@ public class LsCommand implements ICommand {
     private void listAllChildren(FileObject baseItem) throws PermissionDeniedException {
         StringBuilder stringBuilder = new StringBuilder();
         if(baseItem instanceof Directory directoryObject){
+            PermissionChecker pemChecker = new PermissionChecker(baseItem, host.getCurrentUser());
+            if(!pemChecker.isCanRead()){
+                throw new PermissionDeniedException(String.format("%s: cannot open directory '/%s': permission denied", commandName, baseItem.getName()));
+            }
             Collection<FileObject> children = directoryObject.getAllChildren();
             for (FileObject object: children) {
-                PermissionChecker pemChecker = new PermissionChecker(object, host.getCurrentUser());
-                if(!pemChecker.isCanRead()){
-                    throw new PermissionDeniedException(String.format("%s: cannot open directory '/%s': permission denied", commandName, object.getName()));
-                }
+
                 if(detailedList){
                     // Append detailed file information: permissions, user, group, size, modification timestamp, and name
                     FileMetaData metaData = object.getFileMetaData();
