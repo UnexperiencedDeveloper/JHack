@@ -4,6 +4,7 @@ package com.timprogrammiert.filesystem;
 import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.commands.cat.CatCommand;
 import com.timprogrammiert.commands.cd.CdCommand;
+import com.timprogrammiert.commands.chmod.ChmodCommand;
 import com.timprogrammiert.commands.echo.EchoCommand;
 import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.filesystem.directory.Directory;
@@ -76,6 +77,14 @@ public class VirtualFileSystem {
                 catCommand,
                 bin);
         bin.addNewChildren(cat);
+
+        ICommand chmodCommand = new ChmodCommand();
+        ExecutableFile chmod = ExecutableFile.createExecutable("chmod",
+                FileType.Executable,
+                host.getRootUser(),
+                chmodCommand,
+                bin);
+        bin.addNewChildren(chmod);
 
         Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
