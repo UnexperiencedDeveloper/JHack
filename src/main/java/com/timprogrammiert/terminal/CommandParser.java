@@ -11,6 +11,8 @@ import com.timprogrammiert.user.User;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The {@code CommandParser} class is responsible for parsing user commands in a simulated Linux environment.
@@ -25,9 +27,8 @@ import java.util.Map;
  * @version 1.0
  */
 public class CommandParser {
-    private Host host;
-    private User currentUser;
-    private Map<String, ICommand> commandMap;
+    private final Host host;
+    private static final Logger logger = Logger.getLogger(CommandParser.class.getName());
 
     /**
      * Constructs a CommandParser object with the specified host environment.
@@ -35,9 +36,7 @@ public class CommandParser {
      * @param host The host environment in which commands are executed.
      */
     public CommandParser(Host host) {
-        commandMap = new HashMap<>();
         this.host = host;
-        this.currentUser = this.host.getCurrentUser();
     }
 
     /**
@@ -46,7 +45,6 @@ public class CommandParser {
      * @param args The array of command arguments, where the first element is the command name (absolute or relative path).
      */
     public void parseCommand(String[] args){
-        //TODO EXCEPTION HANDLING
 
         // Extract the command name from the arguments (element 0 is the command name, absolute or relative)
         String commandName = args[0];
@@ -55,31 +53,43 @@ public class CommandParser {
             return;
         }
 
-        // Attempt to resolve the command using the given command name
-        ICommand commandToExecute = resolveCommand(commandName);
+        ICommand commandToExecute = null;
+        boolean commandFound = false;
 
         try {
-            // If the command is not found in the given path, Iterate through environment paths and attempt command resolution
-            if (commandToExecute == null) {
-                for (String envPath : Path.EnvironmentVariable.split(":")) {
-                    commandToExecute = resolveCommand(envPath + "/" + commandName);
-                    // If command is found, execute it and break the loop
-                    if (commandToExecute != null) {
-                        commandToExecute.execute(substractCommandName(args), host);
-                        break;
-                    } else {
-                        System.out.println("Command not found - There should be an Exception. Called From Command Parser");
-                        return;
-                    }
-                }
-            } else {
-                // Command was found in given Path
-                commandToExecute.execute(substractCommandName(args), host);
+            // Attempt to resolve the command using the given command name
+            commandToExecute = resolveCommand(commandName);
+            if (commandToExecute != null) {
+                commandFound = true;
             }
-        } catch (CommandExecutionException e) {
-            System.out.println(e.getMessage());
+        } catch (FileObjectNotFoundException searchInEnvPath) {
+            // Command not found in the initial path, attempt to find it in other paths
+            for (String envPath : Path.EnvironmentVariable.split(":")) {
+                try {
+                    commandToExecute = resolveCommand(envPath + "/" + commandName);
+                    if (commandToExecute != null) {
+                        commandFound = true;
+                        break;
+                    }
+                } catch (FileObjectNotFoundException ignored) {
+                    // Ignored because looping over EnrionmentVariable -> Ment to fail sometimes
+                }
+            }
         }
 
+        if (commandFound) {
+            executeCommand(commandToExecute, args);
+        } else {
+            logger.log(Level.WARNING, "Command: " + commandName + " not found");
+        }
+    }
+
+    private void executeCommand(ICommand commandToExecute, String[] args){
+        try {
+            commandToExecute.execute(substractCommandName(args), host);
+        } catch (CommandExecutionException exception) {
+            logger.log(Level.WARNING, exception.getMessage());
+        }
     }
 
     /**
@@ -98,14 +108,10 @@ public class CommandParser {
      * @param commandPath The path to the executable command.
      * @return An ICommand object representing the resolved command, or null if not found.
      */
-    private ICommand resolveCommand(String commandPath){
+    private ICommand resolveCommand(String commandPath) throws FileObjectNotFoundException {
         Path path = new Path(commandPath);
         ExecutableFile executableFile = null;
-        try {
-            executableFile = path.resolvePath(host, ExecutableFile.class);
-        }catch (FileObjectNotFoundException e){
-            //TODO ADD EXCEPTION HANDLE
-        }
+        executableFile = path.resolvePath(host, ExecutableFile.class);
 
         return (executableFile != null) ? executableFile.getCommand() : null;
     }
