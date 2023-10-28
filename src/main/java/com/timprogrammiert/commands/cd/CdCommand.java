@@ -2,6 +2,7 @@ package com.timprogrammiert.commands.cd;
 
 import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.commands.exceptions.CommandExecutionException;
+import com.timprogrammiert.commands.exceptions.PermissionDeniedException;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
@@ -37,19 +38,21 @@ public class CdCommand implements ICommand {
                 targetDirectory = path.resolvePath(host, Directory.class);
                 changeDirectory(targetDirectory);
             }
-        } catch (FileObjectNotFoundException e) {
-            //System.out.println(e.getMessage() + "test");
+        } catch (FileObjectNotFoundException | PermissionDeniedException e) {
             throw new CommandExecutionException(commandName + ": " + e.getMessage());
         }
 
     }
 
-    private void changeDirectory(Directory directoryToCd){
+    private void changeDirectory(Directory directoryToCd) throws PermissionDeniedException {
         PermissionChecker pemChecker = new PermissionChecker(directoryToCd, host);
         // Directories needs Execute Permission to Cd in
-        if(pemChecker.isCanExecute()){
+        // Linux errors silently when Cd in a directory without permission, we dont want do it silently
+        if (pemChecker.isCanExecute()) {
             host.setCurrentDirectory(directoryToCd);
             directoryToCd.getFileMetaData().setAccessedTimeStamp();
+        } else {
+            throw new PermissionDeniedException(String.format("cannot open directory '%s': permission denied", directoryToCd.getName()));
         }
 
     }

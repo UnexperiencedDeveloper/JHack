@@ -2,6 +2,7 @@ package com.timprogrammiert.commands.chmod;
 
 import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.commands.exceptions.CommandExecutionException;
+import com.timprogrammiert.commands.exceptions.PermissionDeniedException;
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ChmodCommand implements ICommand {
     private Host host;
     private Path path;
+    private final String commandName = "chmod";
     @Override
     public void execute(String[] args, Host host) throws CommandExecutionException {
         List<String> argList = new ArrayList<>(Arrays.asList(args));
@@ -31,19 +33,19 @@ public class ChmodCommand implements ICommand {
             path = new Path(argList.get(1));
             PermissionChecker permissionChecker = new PermissionChecker(path.resolvePath(host, FileObject.class),host);
             PermissionChecker permissionCheckerParent = new PermissionChecker(path.resolvePath(host, FileObject.class).getParent(), host);
-            if(permissionChecker.isCanWrite() && permissionCheckerParent.isCanWrite()){
-                FileObject targetFile = path.resolvePath(host, FileObject.class);
+            FileObject targetFile = path.resolvePath(host, FileObject.class);
+            if (permissionChecker.isCanWrite() && permissionCheckerParent.isCanWrite()) {
                 FilePermission filePermission = targetFile.getFileMetaData().getFilePermission();
                 targetFile.getFileMetaData().setFilePermission(PermissionUtil.changePermission(filePermission, permissionNumber));
 
                 targetFile.getFileMetaData().setModifiedTimeStamp();
                 targetFile.getParent().getFileMetaData().setModifiedTimeStamp();
+            } else {
+                throw new PermissionDeniedException(String.format("changing permissions of '%s' : Operation not permitted" , targetFile.getName()));
             }
 
-        } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
-        } catch (FileObjectNotFoundException e) {
-            System.out.println(e.getMessage());
+        } catch (NumberFormatException | FileObjectNotFoundException | PermissionDeniedException e) {
+            throw new CommandExecutionException(commandName + ": " + e.getMessage());
         }
     }
 }

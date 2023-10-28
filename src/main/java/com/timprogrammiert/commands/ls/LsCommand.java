@@ -53,9 +53,7 @@ public class LsCommand implements ICommand {
                 listAllChildren(path.resolvePath(host, Directory.class));
             }
 
-            }catch (PermissionDeniedException e){
-                System.out.println(e.getMessage());
-            }catch (FileObjectNotFoundException e){
+            }catch (FileObjectNotFoundException | PermissionDeniedException e){
                 throw new CommandExecutionException(commandName + ": " + e.getMessage());
             }
     }
@@ -77,7 +75,7 @@ public class LsCommand implements ICommand {
         if(baseItem instanceof Directory directoryObject){
             PermissionChecker pemChecker = new PermissionChecker(baseItem, host);
             if(!pemChecker.isCanRead()){
-                throw new PermissionDeniedException(String.format("%s: cannot open directory '/%s': permission denied", commandName, baseItem.getName()));
+                throw new PermissionDeniedException(String.format("cannot open directory '%s': permission denied", baseItem.getName()));
             }
             Collection<FileObject> children = directoryObject.getAllChildren();
             for (FileObject object: children) {

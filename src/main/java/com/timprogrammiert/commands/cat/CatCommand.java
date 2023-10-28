@@ -25,7 +25,9 @@ public class CatCommand implements ICommand {
     public void execute(String[] args, Host host) throws CommandExecutionException {
         try {
             List<String> argList = new ArrayList<>(Arrays.asList(args));
-            if(argList.isEmpty()) return; // Do nothing
+            if(argList.isEmpty()) {
+                // Do nothing
+            }
             else  {
                 path = new Path(argList.get(0));
                 RegularFile fileToCat = path.resolvePath(host, RegularFile.class);
@@ -36,10 +38,8 @@ public class CatCommand implements ICommand {
                     throw new PermissionDeniedException(String.format("%s: cannot open file '/%s': permission denied", commandName, fileToCat.getName()));
                 }
             }
-        } catch (FileObjectNotFoundException e) {
-            System.out.println(e.getMessage());
-        } catch (PermissionDeniedException e) {
-            System.out.println(e.getMessage());
+        } catch (FileObjectNotFoundException | PermissionDeniedException e) {
+            throw new CommandExecutionException(commandName + ": " + e.getMessage());
         }
     }
 
