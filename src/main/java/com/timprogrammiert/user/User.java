@@ -1,6 +1,8 @@
 package com.timprogrammiert.user;
 
 import com.timprogrammiert.filesystem.directory.Directory;
+import com.timprogrammiert.filesystem.permission.PermissionUtil;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -67,6 +69,7 @@ public class User {
 
     public void setHomeDirectory(Directory homeDirectory){
         this.homeDirectory = homeDirectory;
+        PermissionUtil.changePermission(this.homeDirectory.getFileMetaData().getFilePermission(), 770);
     }
 
     public Directory getHomeDirectory() {
