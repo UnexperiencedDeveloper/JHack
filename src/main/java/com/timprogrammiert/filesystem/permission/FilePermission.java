@@ -40,7 +40,7 @@ public class FilePermission {
     }
 
     public void setPermissionString(String permissionString){
-        if(isDirectory) permissionString = "d" + permissionString;
+        permissionString = isDirectory ? "d" + permissionString : "-" + permissionString;
         this.permissionString = permissionString;
     }
 
