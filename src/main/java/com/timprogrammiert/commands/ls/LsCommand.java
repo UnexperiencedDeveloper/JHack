@@ -11,10 +11,8 @@ import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.filesystem.permission.PermissionChecker;
 import com.timprogrammiert.host.Host;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * The {@code LsCommand} class implements the ICommand interface to execute the 'ls' command in a simulated
@@ -85,13 +83,14 @@ public class LsCommand implements ICommand {
             for (FileObject object: children) {
 
                 if(detailedList){
+                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM dd HH:mm", Locale.ENGLISH);
                     // Append detailed file information: permissions, user, group, size, modification timestamp, and name
                     FileMetaData metaData = object.getFileMetaData();
                     stringBuilder.append(metaData.getFilePermission().getPermissionString()).append(" ")
                             .append(metaData.getFilePermission().getUser().getUserName()).append(" ")
                             .append(metaData.getFilePermission().getUserGroup().getGroupName()).append(" ")
                             .append("FileSize").append(" ")
-                            .append(metaData.getModifiedTimeStamp()).append(" ")
+                            .append(metaData.getModifiedTimeStamp().format(dateTimeFormatter)).append(" ")
                             .append(object.getName()).append("\n");
                 }else {
                     // Append only the names of files/directories

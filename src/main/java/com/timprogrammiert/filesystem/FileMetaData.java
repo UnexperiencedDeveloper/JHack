@@ -48,4 +48,16 @@ public class FileMetaData {
     public String getFileSize() {
         return fileSize;
     }
+
+    public void setFilePermission(FilePermission filePermission) {
+        this.filePermission = filePermission;
+    }
+
+    public void setAccessedTimeStamp() {
+        this.accessedTimeStamp = LocalDateTime.now();
+    }
+
+    public void setModifiedTimeStamp() {
+        this.modifiedTimeStamp = LocalDateTime.now();
+    }
 }
