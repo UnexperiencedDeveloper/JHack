@@ -9,6 +9,7 @@ import com.timprogrammiert.commands.echo.EchoCommand;
 import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.executable.ExecutableFile;
+import com.timprogrammiert.filesystem.permission.PermissionUtil;
 import com.timprogrammiert.filesystem.regularFile.RegularFile;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.FileType;
@@ -88,9 +89,11 @@ public class VirtualFileSystem {
 
         Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
+        PermissionUtil.changePermission(etc.getFileMetaData().getFilePermission(), 775);
 
         RegularFile passwd = RegularFile.createRegularFile("passwd", FileType.RegularFile, host.getRootUser(), etc);
         etc.addNewChildren(passwd);
+        PermissionUtil.changePermission(passwd.getFileMetaData().getFilePermission(), 664);
 
         homeDirectory = Directory.createDirectory("home", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(homeDirectory);
@@ -100,9 +103,11 @@ public class VirtualFileSystem {
 
         Directory usrBin = Directory.createDirectory("bin", FileType.Directory, host.getRootUser(), rootDirectory);
         usr.addNewChildren(usrBin);
+        PermissionUtil.changePermission(usrBin.getFileMetaData().getFilePermission(), 770);
 
         Directory var = Directory.createDirectory("var", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(var);
+        PermissionUtil.changePermission(var.getFileMetaData().getFilePermission(), 770);
 
         Directory tmp = Directory.createDirectory("tmp", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(tmp);
