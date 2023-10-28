@@ -38,20 +38,18 @@ public class CdCommand implements ICommand {
                 changeDirectory(targetDirectory);
             }
         } catch (FileObjectNotFoundException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage() + "test");
+            throw new CommandExecutionException(commandName + ": " + e.getMessage());
         }
 
     }
 
-    private void changeDirectory(Directory directoryToCd) throws CommandExecutionException {
-        try {
-            PermissionChecker pemChecker = new PermissionChecker(directoryToCd, host);
-            // Directories needs Execute Permission to Cd in
-            if(pemChecker.isCanExecute()){
-                host.setCurrentDirectory(directoryToCd);
-            }
-        } catch (NullPointerException e) {
-            throw new CommandExecutionException("");
+    private void changeDirectory(Directory directoryToCd){
+        PermissionChecker pemChecker = new PermissionChecker(directoryToCd, host);
+        // Directories needs Execute Permission to Cd in
+        if(pemChecker.isCanExecute()){
+            host.setCurrentDirectory(directoryToCd);
+            directoryToCd.getFileMetaData().setAccessedTimeStamp();
         }
 
     }

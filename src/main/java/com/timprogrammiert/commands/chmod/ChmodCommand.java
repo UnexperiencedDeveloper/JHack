@@ -35,6 +35,9 @@ public class ChmodCommand implements ICommand {
                 FileObject targetFile = path.resolvePath(host, FileObject.class);
                 FilePermission filePermission = targetFile.getFileMetaData().getFilePermission();
                 targetFile.getFileMetaData().setFilePermission(PermissionUtil.changePermission(filePermission, permissionNumber));
+
+                targetFile.getFileMetaData().setModifiedTimeStamp();
+                targetFile.getParent().getFileMetaData().setModifiedTimeStamp();
             }
 
         } catch (NumberFormatException e) {
