@@ -1,6 +1,5 @@
 package com.timprogrammiert;
 
-import com.timprogrammiert.host.Host;
 import com.timprogrammiert.terminal.Terminal;
 
 public class Main {
