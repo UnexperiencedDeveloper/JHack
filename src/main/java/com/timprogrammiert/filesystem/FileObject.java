@@ -16,6 +16,7 @@ public class FileObject {
     private final FileTypeEnum fileTypeEnum;
     private final FileMetaData fileMetaData;
     private Directory parent;
+    private final FileSizeCalculater fileSizeCalculater;
 
     /**
      * Constructs a FileObject with the specified file name, file type, user, and parent directory.
@@ -30,6 +31,7 @@ public class FileObject {
         this.fileTypeEnum = fileTypeEnum;
         this.fileMetaData = FileMetaData.createMetaData(user, fileTypeEnum);
         this.parent = parent;
+        this.fileSizeCalculater = new FileSizeCalculater();
     }
     /**
      * Constructs a FileObject with the specified file name, file type, and user.
@@ -42,6 +44,7 @@ public class FileObject {
         this.fileName = fileName;
         this.fileTypeEnum = fileTypeEnum;
         this.fileMetaData = FileMetaData.createMetaData(user, fileTypeEnum);
+        this.fileSizeCalculater = new FileSizeCalculater();
     }
 
     /**
@@ -79,6 +82,10 @@ public class FileObject {
     public Directory getParent(){
         // TODO HANDLE IF NO PARENT EXISTS, LIKE FOR ROOT DIRECTORY
         return parent;
+    }
+
+    public int caluclateFileSize(){
+       return fileSizeCalculater.calculateSize(this);
     }
 
 }
