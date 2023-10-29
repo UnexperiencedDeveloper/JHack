@@ -13,13 +13,7 @@ public class PermissionChecker {
     private boolean canRead;
     private boolean canWrite;
     private boolean canExecute;
-    private Host host;
-
-    public PermissionChecker(FileObject fileObject, User currentUser) {
-        this.fileObject = fileObject;
-        this.currentUser = currentUser;
-        extractPermissions();
-    }
+    private final Host host;
 
     public PermissionChecker(FileObject fileObject, Host host) {
         this.fileObject = fileObject;
