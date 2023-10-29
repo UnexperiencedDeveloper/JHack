@@ -84,8 +84,9 @@ public class ChmodCommand implements ICommand {
      * @param permissionNumber The new permission number as a string.
      */
     private void updateFilePermissions(FileObject targetFile, String permissionNumber){
-        FilePermission filePermission = targetFile.getFileMetaData().getFilePermission();
-        targetFile.getFileMetaData().setFilePermission(PermissionUtil.changePermission(filePermission, permissionNumber));
+        FilePermission originalFilePermission = targetFile.getFileMetaData().getFilePermission();
+        FilePermission updatedFilePermission = PermissionUtil.changePermission(originalFilePermission, permissionNumber);
+        targetFile.getFileMetaData().setFilePermission(updatedFilePermission);
     }
 
     /**
@@ -107,17 +108,46 @@ public class ChmodCommand implements ICommand {
      * @throws PermissionDeniedException If permission change is not permitted because the String is 000.
      */
     private String parsePermissionNumber(List<String> argList) throws NumberFormatException, PermissionDeniedException{
-        if (isInteger(argList.get(0))) {
-            String pemString = argList.get(0);
-            if (argList.get(0).length() != 3)
-                throw new NumberFormatException(String.format("missing operand after '%s'", argList.get(0).charAt(argList.get(0).length() - 1)));
-            if (pemString.equals("999")) pemString = "777"; // chmod 999 is treated as 777
-            if (pemString.equals("000")) throw new PermissionDeniedException("Operation not permitted");
+        String pemString = argList.get(0);
+        if (isInteger(pemString)) {
+            validateInputFormat(pemString);
+            validatePermissionRange(pemString);
             return pemString;
         } else {
+            // If the input is not a valid integer, it's invalid
             throw new NumberFormatException("missing operand");
         }
+    }
 
+    /**
+     * Validates the input format of the permission number.
+     *
+     * @param pemString The permission number to be validated.
+     * @throws NumberFormatException If the input does not match the required format.
+     *                               Throws an exception with a detailed message indicating the position
+     *                               of the invalid character in the input string.
+     */
+    private void validateInputFormat(String pemString)throws NumberFormatException{
+        if (!pemString.matches("\\d{3}")) {
+            throw new NumberFormatException(String.format("missing operand after '%s'", pemString.charAt(pemString.length() - 1)));
+        }
+    }
+
+    /**
+     * Validates the permission range of the input permission number.
+     *
+     * @param pemString The permission number to be validated.
+     * @throws PermissionDeniedException If the input is not in the valid range [000-777] or is "000".
+     *                                   Throws an exception indicating that the operation is not permitted.
+     */
+    private void validatePermissionRange(String pemString) throws PermissionDeniedException {
+        if (!pemString.matches("[0-7]{3}")) {
+            throw new PermissionDeniedException("Operation not permitted");
+        }
+
+        if (pemString.equals("000")) {
+            throw new PermissionDeniedException("Operation not permitted");
+        }
     }
 
     /**
