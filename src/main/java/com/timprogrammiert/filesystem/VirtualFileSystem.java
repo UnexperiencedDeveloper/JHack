@@ -12,7 +12,7 @@ import com.timprogrammiert.filesystem.executable.ExecutableFile;
 import com.timprogrammiert.filesystem.permission.PermissionUtil;
 import com.timprogrammiert.filesystem.regularFile.RegularFile;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 /**
  * @author tmatz
@@ -24,7 +24,7 @@ public class VirtualFileSystem {
 
     public VirtualFileSystem(Host host) {
         this.host = host;
-        rootDirectory = Directory.createRootDirectory("/", FileType.Directory, host.getRootUser());
+        rootDirectory = Directory.createRootDirectory("/", FileTypeEnum.Directory, host.getRootUser());
         setupFilesystemStructure();
     }
     public Directory getRootDirectory(){
@@ -44,12 +44,12 @@ public class VirtualFileSystem {
     }
 
     private void setupFilesystemStructure(){
-        Directory bin = Directory.createDirectory("bin", FileType.Directory, host.getRootUser(), rootDirectory);
+        Directory bin = Directory.createDirectory("bin", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(bin);
 
         ICommand lsCommand = new LsCommand();
         ExecutableFile ls = ExecutableFile.createExecutable("ls",
-                FileType.Executable,
+                FileTypeEnum.Executable,
                 host.getRootUser(),
                 lsCommand,
                 bin);
@@ -57,7 +57,7 @@ public class VirtualFileSystem {
 
         ICommand cdCommand = new CdCommand();
         ExecutableFile cd = ExecutableFile.createExecutable("cd",
-                FileType.Executable,
+                FileTypeEnum.Executable,
                 host.getRootUser(),
                 cdCommand,
                 bin);
@@ -65,7 +65,7 @@ public class VirtualFileSystem {
 
         ICommand echoCommand = new EchoCommand();
         ExecutableFile echo = ExecutableFile.createExecutable("echo",
-                FileType.Executable,
+                FileTypeEnum.Executable,
                 host.getRootUser(),
                 echoCommand,
                 bin);
@@ -73,7 +73,7 @@ public class VirtualFileSystem {
 
         ICommand catCommand = new CatCommand();
         ExecutableFile cat = ExecutableFile.createExecutable("cat",
-                FileType.Executable,
+                FileTypeEnum.Executable,
                 host.getRootUser(),
                 catCommand,
                 bin);
@@ -81,35 +81,35 @@ public class VirtualFileSystem {
 
         ICommand chmodCommand = new ChmodCommand();
         ExecutableFile chmod = ExecutableFile.createExecutable("chmod",
-                FileType.Executable,
+                FileTypeEnum.Executable,
                 host.getRootUser(),
                 chmodCommand,
                 bin);
         bin.addNewChildren(chmod);
 
-        Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getRootUser(), rootDirectory);
+        Directory etc = Directory.createDirectory("etc", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
         PermissionUtil.changePermission(etc.getFileMetaData().getFilePermission(), "775");
 
-        RegularFile passwd = RegularFile.createRegularFile("passwd", FileType.RegularFile, host.getRootUser(), etc);
+        RegularFile passwd = RegularFile.createRegularFile("passwd", FileTypeEnum.RegularFile, host.getRootUser(), etc);
         etc.addNewChildren(passwd);
         PermissionUtil.changePermission(passwd.getFileMetaData().getFilePermission(), "664");
 
-        homeDirectory = Directory.createDirectory("home", FileType.Directory, host.getRootUser(), rootDirectory);
+        homeDirectory = Directory.createDirectory("home", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(homeDirectory);
 
-        Directory usr = Directory.createDirectory("usr", FileType.Directory, host.getRootUser(), rootDirectory);
+        Directory usr = Directory.createDirectory("usr", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(usr);
 
-        Directory usrBin = Directory.createDirectory("bin", FileType.Directory, host.getRootUser(), rootDirectory);
+        Directory usrBin = Directory.createDirectory("bin", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         usr.addNewChildren(usrBin);
         PermissionUtil.changePermission(usrBin.getFileMetaData().getFilePermission(), "770");
 
-        Directory var = Directory.createDirectory("var", FileType.Directory, host.getRootUser(), rootDirectory);
+        Directory var = Directory.createDirectory("var", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(var);
         PermissionUtil.changePermission(var.getFileMetaData().getFilePermission(), "770");
 
-        Directory tmp = Directory.createDirectory("tmp", FileType.Directory, host.getRootUser(), rootDirectory);
+        Directory tmp = Directory.createDirectory("tmp", FileTypeEnum.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(tmp);
 
 

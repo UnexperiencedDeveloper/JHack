@@ -4,11 +4,6 @@ import com.timprogrammiert.filesystem.VirtualFileSystem;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.user.User;
 import com.timprogrammiert.user.UserGroup;
-import com.timprogrammiert.util.FileType;
-
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * Represents a host system in a virtual environment. It contains information about the host's file system,

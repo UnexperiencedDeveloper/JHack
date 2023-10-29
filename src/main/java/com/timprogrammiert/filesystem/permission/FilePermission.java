@@ -2,7 +2,7 @@ package com.timprogrammiert.filesystem.permission;
 
 import com.timprogrammiert.user.User;
 import com.timprogrammiert.user.UserGroup;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 /**
  * @author tmatz
@@ -24,15 +24,15 @@ public class FilePermission {
         this.isDirectory = isDirectory;
     }
 
-    public static FilePermission createPermission(User user, FileType fileType){
+    public static FilePermission createPermission(User user, FileTypeEnum fileTypeEnum){
         String permissionString = "";
-        if(fileType.equals(FileType.Directory)){
+        if(fileTypeEnum.equals(FileTypeEnum.Directory)){
             permissionString = DEFAULT_DIRECTORY_PERMISSION;
             return new FilePermission(permissionString, user, true);
-        } else if (fileType.equals(FileType.RegularFile)) {
+        } else if (fileTypeEnum.equals(FileTypeEnum.RegularFile)) {
             permissionString = DEFAULT_FILE_PERMISSION;
             return new FilePermission(permissionString, user, false);
-        } else if (fileType.equals(FileType.Executable)) {
+        } else if (fileTypeEnum.equals(FileTypeEnum.Executable)) {
             permissionString = DEFAULT_EXECUTABLE_PERMISSION;
             return new FilePermission(permissionString, user, false);
         }

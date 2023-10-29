@@ -1,9 +1,8 @@
 package com.timprogrammiert.filesystem.directory;
 
-import com.timprogrammiert.filesystem.FileMetaData;
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.user.User;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,19 +14,19 @@ import java.util.Map;
 public class Directory extends FileObject {
     private final Map<String, FileObject> children;
 
-    public static Directory createRootDirectory(String fileName, FileType fileType, User user){
-        return new Directory(fileName, fileType, user);
+    public static Directory createRootDirectory(String fileName, FileTypeEnum fileTypeEnum, User user){
+        return new Directory(fileName, fileTypeEnum, user);
     }
 
-    public static Directory createDirectory(String fileName, FileType fileType, User user, Directory parent){
-        return new Directory(fileName, fileType, user, parent);
+    public static Directory createDirectory(String fileName, FileTypeEnum fileTypeEnum, User user, Directory parent){
+        return new Directory(fileName, fileTypeEnum, user, parent);
     }
-    private Directory(String fileName, FileType fileType, User user, Directory parent) {
-        super(fileName, fileType, user, parent);
+    private Directory(String fileName, FileTypeEnum fileTypeEnum, User user, Directory parent) {
+        super(fileName, fileTypeEnum, user, parent);
         this.children = new HashMap<>();
     }
-    private Directory(String fileName, FileType fileType, User user) {
-        super(fileName, fileType, user);
+    private Directory(String fileName, FileTypeEnum fileTypeEnum, User user) {
+        super(fileName, fileTypeEnum, user);
         this.children = new HashMap<>();
     }
 

@@ -3,7 +3,7 @@ package com.timprogrammiert.util;
 /**
  * @author tmatz
  */
-public enum FileType {
+public enum FileTypeEnum {
     Executable,
     Directory,
     RegularFile,

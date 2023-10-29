@@ -4,7 +4,7 @@ import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +69,7 @@ public class Path {
             FileObject recursiveObject = (getPathToArray().get(0).equals("/")) ? host.getRootDirectory() : host.getCurrentDirectory();
             for (String fileObjectName : getPathToArray()) {
                 if (fileObjectName.equals("/")) continue;
-                if(recursiveObject.getFileType().equals(FileType.Directory)){
+                if(recursiveObject.getFileType().equals(FileTypeEnum.Directory)){
                     recursiveObject = ((Directory) recursiveObject).getChildrenByName(fileObjectName);
                 }
             }

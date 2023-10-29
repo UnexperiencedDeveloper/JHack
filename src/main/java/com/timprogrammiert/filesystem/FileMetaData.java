@@ -2,7 +2,7 @@ package com.timprogrammiert.filesystem;
 
 import com.timprogrammiert.filesystem.permission.FilePermission;
 import com.timprogrammiert.user.User;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 import java.time.LocalDateTime;
 
@@ -17,16 +17,16 @@ public class FileMetaData {
     public FileMetaData() {
 
     }
-    private FileMetaData(User user, FileType fileType){
+    private FileMetaData(User user, FileTypeEnum fileTypeEnum){
         // for filePermission creation
         createdTimeStamp = LocalDateTime.now();
         accessedTimeStamp = LocalDateTime.now();
         modifiedTimeStamp = LocalDateTime.now();
-        filePermission = FilePermission.createPermission(user, fileType);
+        filePermission = FilePermission.createPermission(user, fileTypeEnum);
     }
 
-    public static FileMetaData createMetaData(User user, FileType fileType){
-        return new FileMetaData(user, fileType);
+    public static FileMetaData createMetaData(User user, FileTypeEnum fileTypeEnum){
+        return new FileMetaData(user, fileTypeEnum);
     }
 
     public LocalDateTime getAccessedTimeStamp() {

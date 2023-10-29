@@ -2,7 +2,7 @@ package com.timprogrammiert.filesystem;
 
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.user.User;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 /**
  * The {@code FileObject} class represents a generic file or directory in a simulated file system.
@@ -13,7 +13,7 @@ import com.timprogrammiert.util.FileType;
  */
 public class FileObject {
     private final String fileName;
-    private final FileType fileType;
+    private final FileTypeEnum fileTypeEnum;
     private final FileMetaData fileMetaData;
     private Directory parent;
 
@@ -21,27 +21,27 @@ public class FileObject {
      * Constructs a FileObject with the specified file name, file type, user, and parent directory.
      *
      * @param fileName The name of the file or directory.
-     * @param fileType The type of the file (regular file or directory).
+     * @param fileTypeEnum The type of the file (regular file or directory).
      * @param user     The user associated with the file.
      * @param parent   The parent directory of the file (null if the file is in the root directory).
      */
-    protected FileObject(String fileName, FileType fileType, User user, Directory parent) {
+    protected FileObject(String fileName, FileTypeEnum fileTypeEnum, User user, Directory parent) {
         this.fileName = fileName;
-        this.fileType = fileType;
-        this.fileMetaData = FileMetaData.createMetaData(user, fileType);
+        this.fileTypeEnum = fileTypeEnum;
+        this.fileMetaData = FileMetaData.createMetaData(user, fileTypeEnum);
         this.parent = parent;
     }
     /**
      * Constructs a FileObject with the specified file name, file type, and user.
      *
      * @param fileName The name of the file or directory.
-     * @param fileType The type of the file (regular file or directory).
+     * @param fileTypeEnum The type of the file (regular file or directory).
      * @param user     The user associated with the file.
      */
-    protected FileObject(String fileName, FileType fileType, User user) {
+    protected FileObject(String fileName, FileTypeEnum fileTypeEnum, User user) {
         this.fileName = fileName;
-        this.fileType = fileType;
-        this.fileMetaData = FileMetaData.createMetaData(user, fileType);
+        this.fileTypeEnum = fileTypeEnum;
+        this.fileMetaData = FileMetaData.createMetaData(user, fileTypeEnum);
     }
 
     /**
@@ -58,8 +58,8 @@ public class FileObject {
      *
      * @return The type of the file.
      */
-    public FileType getFileType(){
-        return fileType;
+    public FileTypeEnum getFileType(){
+        return fileTypeEnum;
     }
 
     /**

@@ -5,7 +5,7 @@ import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.filesystem.manager.EtcPasswdManager;
 import com.timprogrammiert.user.User;
 import com.timprogrammiert.user.UserGroup;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -73,7 +73,7 @@ public class UserManager {
      */
     private Directory createHomeDirectory(User user){
         Directory baseHomeDirectory = fileSystem.getHomeDirectory();
-        Directory newHomeDirectory = Directory.createDirectory(user.getUserName(), FileType.Directory, user, baseHomeDirectory);
+        Directory newHomeDirectory = Directory.createDirectory(user.getUserName(), FileTypeEnum.Directory, user, baseHomeDirectory);
         baseHomeDirectory.addNewChildren(newHomeDirectory);
         return newHomeDirectory;
     }

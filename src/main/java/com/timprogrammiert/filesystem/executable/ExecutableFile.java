@@ -4,7 +4,7 @@ import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.user.User;
-import com.timprogrammiert.util.FileType;
+import com.timprogrammiert.util.FileTypeEnum;
 
 /**
  * @author tmatz
@@ -12,13 +12,13 @@ import com.timprogrammiert.util.FileType;
 public class ExecutableFile extends FileObject {
     private ICommand command;
 
-    private ExecutableFile(String fileName, FileType fileType, User user, ICommand command, Directory parent) {
-        super(fileName, fileType, user, parent);
+    private ExecutableFile(String fileName, FileTypeEnum fileTypeEnum, User user, ICommand command, Directory parent) {
+        super(fileName, fileTypeEnum, user, parent);
         this.command = command;
     }
 
-    public static ExecutableFile createExecutable(String fileName, FileType fileType, User user, ICommand command, Directory parent){
-        return new ExecutableFile(fileName, fileType, user, command, parent);
+    public static ExecutableFile createExecutable(String fileName, FileTypeEnum fileTypeEnum, User user, ICommand command, Directory parent){
+        return new ExecutableFile(fileName, fileTypeEnum, user, command, parent);
     }
 
     public ICommand getCommand(){
