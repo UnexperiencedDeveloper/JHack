@@ -69,7 +69,7 @@ public class User {
 
     public void setHomeDirectory(Directory homeDirectory){
         this.homeDirectory = homeDirectory;
-        PermissionUtil.changePermission(this.homeDirectory.getFileMetaData().getFilePermission(), 770);
+        PermissionUtil.changePermission(this.homeDirectory.getFileMetaData().getFilePermission(), "770");
     }
 
     public Directory getHomeDirectory() {

@@ -89,11 +89,11 @@ public class VirtualFileSystem {
 
         Directory etc = Directory.createDirectory("etc", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(etc);
-        PermissionUtil.changePermission(etc.getFileMetaData().getFilePermission(), 775);
+        PermissionUtil.changePermission(etc.getFileMetaData().getFilePermission(), "775");
 
         RegularFile passwd = RegularFile.createRegularFile("passwd", FileType.RegularFile, host.getRootUser(), etc);
         etc.addNewChildren(passwd);
-        PermissionUtil.changePermission(passwd.getFileMetaData().getFilePermission(), 664);
+        PermissionUtil.changePermission(passwd.getFileMetaData().getFilePermission(), "664");
 
         homeDirectory = Directory.createDirectory("home", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(homeDirectory);
@@ -103,11 +103,11 @@ public class VirtualFileSystem {
 
         Directory usrBin = Directory.createDirectory("bin", FileType.Directory, host.getRootUser(), rootDirectory);
         usr.addNewChildren(usrBin);
-        PermissionUtil.changePermission(usrBin.getFileMetaData().getFilePermission(), 770);
+        PermissionUtil.changePermission(usrBin.getFileMetaData().getFilePermission(), "770");
 
         Directory var = Directory.createDirectory("var", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(var);
-        PermissionUtil.changePermission(var.getFileMetaData().getFilePermission(), 770);
+        PermissionUtil.changePermission(var.getFileMetaData().getFilePermission(), "770");
 
         Directory tmp = Directory.createDirectory("tmp", FileType.Directory, host.getRootUser(), rootDirectory);
         rootDirectory.addNewChildren(tmp);
