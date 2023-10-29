@@ -1,9 +1,9 @@
 package com.timprogrammiert.commands.cat;
 
 import com.timprogrammiert.commands.ICommand;
-import com.timprogrammiert.commands.exceptions.CommandExecutionException;
-import com.timprogrammiert.commands.exceptions.PermissionDeniedException;
-import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
+import com.timprogrammiert.exceptions.CommandExecutionException;
+import com.timprogrammiert.exceptions.PermissionDeniedException;
+import com.timprogrammiert.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.filesystem.permission.PermissionChecker;
 import com.timprogrammiert.filesystem.regularFile.RegularFile;

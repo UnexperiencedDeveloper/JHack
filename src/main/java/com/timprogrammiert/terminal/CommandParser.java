@@ -1,16 +1,13 @@
 package com.timprogrammiert.terminal;
 
 import com.timprogrammiert.commands.ICommand;
-import com.timprogrammiert.commands.exceptions.CommandExecutionException;
-import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
+import com.timprogrammiert.exceptions.CommandExecutionException;
+import com.timprogrammiert.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.executable.ExecutableFile;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.user.User;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

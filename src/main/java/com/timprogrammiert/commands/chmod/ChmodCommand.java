@@ -1,10 +1,10 @@
 package com.timprogrammiert.commands.chmod;
 
 import com.timprogrammiert.commands.ICommand;
-import com.timprogrammiert.commands.exceptions.CommandExecutionException;
-import com.timprogrammiert.commands.exceptions.PermissionDeniedException;
+import com.timprogrammiert.exceptions.CommandExecutionException;
+import com.timprogrammiert.exceptions.PermissionDeniedException;
 import com.timprogrammiert.filesystem.FileObject;
-import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
+import com.timprogrammiert.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.filesystem.permission.FilePermission;
 import com.timprogrammiert.filesystem.permission.PermissionChecker;

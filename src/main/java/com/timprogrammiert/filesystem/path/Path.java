@@ -2,7 +2,7 @@ package com.timprogrammiert.filesystem.path;
 
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
-import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
+import com.timprogrammiert.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.FileTypeEnum;
 

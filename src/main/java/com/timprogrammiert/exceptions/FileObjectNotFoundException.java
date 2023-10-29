@@ -1,4 +1,4 @@
-package com.timprogrammiert.filesystem.exceptions;
+package com.timprogrammiert.exceptions;
 
 /**
  * @author tmatz

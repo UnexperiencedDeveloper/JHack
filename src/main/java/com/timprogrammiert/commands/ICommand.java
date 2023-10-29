@@ -1,6 +1,6 @@
 package com.timprogrammiert.commands;
 
-import com.timprogrammiert.commands.exceptions.CommandExecutionException;
+import com.timprogrammiert.exceptions.CommandExecutionException;
 import com.timprogrammiert.host.Host;
 
 /**

@@ -1,6 +1,6 @@
 package com.timprogrammiert.filesystem.manager;
 
-import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
+import com.timprogrammiert.exceptions.FileObjectNotFoundException;
 import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.filesystem.regularFile.RegularFile;
 import com.timprogrammiert.host.Host;

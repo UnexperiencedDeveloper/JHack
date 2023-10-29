@@ -1,10 +1,8 @@
 package com.timprogrammiert.commands.echo;
 
 import com.timprogrammiert.commands.ICommand;
-import com.timprogrammiert.commands.exceptions.CommandExecutionException;
-import com.timprogrammiert.filesystem.exceptions.FileObjectNotFoundException;
+import com.timprogrammiert.exceptions.CommandExecutionException;
 import com.timprogrammiert.filesystem.path.Path;
-import com.timprogrammiert.filesystem.regularFile.RegularFile;
 import com.timprogrammiert.host.Host;
 
 import java.util.ArrayList;
