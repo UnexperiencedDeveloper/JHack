@@ -3,7 +3,6 @@ package com.timprogrammiert.commands.ls;
 import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.exceptions.CommandExecutionException;
 import com.timprogrammiert.exceptions.PermissionDeniedException;
-import com.timprogrammiert.filesystem.FileMetaData;
 import com.timprogrammiert.filesystem.FileObject;
 import com.timprogrammiert.filesystem.directory.Directory;
 import com.timprogrammiert.exceptions.FileObjectNotFoundException;
@@ -11,7 +10,6 @@ import com.timprogrammiert.filesystem.path.Path;
 import com.timprogrammiert.filesystem.permission.PermissionChecker;
 import com.timprogrammiert.host.Host;
 
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -66,42 +64,41 @@ public class LsCommand implements ICommand {
     }
 
     /**
-     * Lists all children (files and directories) of the specified base directory.
+     * Lists all children (files and directories) of the specified {@code baseItem}.
+     * If {@code baseItem} is a directory and the user has read permission, it prints
+     * the detailed information of the children, including permissions, user names,
+     * group names, file sizes, modification timestamps, and names. If detailed listing
+     * is not requested, it prints only the names of the children.
      *
-     * @param baseItem The base directory whose contents need to be listed.
+     * @param baseItem The {@link FileObject} representing the directory for which
+     *                 children are to be listed.
+     * @throws PermissionDeniedException If the user does not have permission to read
+     *                                   the specified directory.
      */
     private void listAllChildren(FileObject baseItem) throws PermissionDeniedException {
-        StringBuilder stringBuilder = new StringBuilder();
-        if(baseItem instanceof Directory directoryObject){
+        if (baseItem instanceof Directory directoryObject) {
+            StringBuilder stringBuilder = new StringBuilder();
             PermissionChecker pemChecker = new PermissionChecker(baseItem, host);
-            if(!pemChecker.isCanRead()){
+            if (!pemChecker.isCanRead()) {
                 throw new PermissionDeniedException(String.format("cannot open directory '%s': permission denied", baseItem.getName()));
             }
             Collection<FileObject> children = directoryObject.getAllChildren();
-            for (FileObject object: children) {
-
-                if(detailedList){
-                    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM dd HH:mm", Locale.ENGLISH);
-                    // Append detailed file information: permissions, user, group, size, modification timestamp, and name
-                    FileMetaData metaData = object.getFileMetaData();
-                    stringBuilder.append(metaData.getFilePermission().getPermissionString()).append(" ")
-                            .append(metaData.getFilePermission().getUser().getUserName()).append(" ")
-                            .append(metaData.getFilePermission().getUserGroup().getGroupName()).append(" ")
-                            .append("FileSize").append(" ")
-                            .append(metaData.getModifiedTimeStamp().format(dateTimeFormatter)).append(" ")
-                            .append(object.getName()).append("\n");
-                }else {
+            if (detailedList) {
+                printDetails(children);
+                detailedList = false;
+            } else {
+                for (FileObject object : children) {
                     // Append only the names of files/directories
                     stringBuilder.append(object.getName()).append("\n");
                 }
             }
+
             // Print the list of children (detailed or simple) to the console if its not empty
-            if(!stringBuilder.toString().isEmpty()){
+            if (!stringBuilder.toString().isEmpty()) {
                 System.out.println(stringBuilder.toString().strip());
             }
-
         }
-        detailedList = false;
+
     }
 
     /**
@@ -116,5 +113,10 @@ public class LsCommand implements ICommand {
             argList.remove("-al");
         }
         return argList;
+    }
+
+    private void printDetails(Collection<FileObject> children){
+        TabledPrinter tabledPrinter = new TabledPrinter(children);
+        tabledPrinter.printTabled();
     }
 }
