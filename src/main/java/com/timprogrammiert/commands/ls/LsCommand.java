@@ -46,7 +46,13 @@ public class LsCommand implements ICommand {
             if(argList.isEmpty()){
                 // If no specific path provided, list files and directories in the current directory
                 listCurrentDirectory();
-            }else {
+            } else if (argList.get(0).equals(".")) {
+                // list current Directory
+                listAllChildren(host.getCurrentDirectory());
+            } else if (argList.get(0).equals("..")) {
+                // list parent Directory
+                listAllChildren(host.getCurrentDirectory().getParent());
+            } else {
                 path = new Path(argList.get(0));
                 listAllChildren(path.resolvePath(host, Directory.class));
             }
@@ -82,11 +88,12 @@ public class LsCommand implements ICommand {
             if (!pemChecker.isCanRead()) {
                 throw new PermissionDeniedException(String.format("cannot open directory '%s': permission denied", baseItem.getName()));
             }
-            Collection<FileObject> children = directoryObject.getAllChildren();
+
             if (detailedList) {
-                printDetails(children);
+                printDetails(directoryObject);
                 detailedList = false;
             } else {
+                Collection<FileObject> children = directoryObject.getAllChildren();
                 for (FileObject object : children) {
                     // Append only the names of files/directories
                     stringBuilder.append(object.getName()).append("\n");
@@ -115,8 +122,8 @@ public class LsCommand implements ICommand {
         return argList;
     }
 
-    private void printDetails(Collection<FileObject> children){
-        TablePrinter tablePrinter = new TablePrinter(children);
+    private void printDetails(Directory directory){
+        TablePrinter tablePrinter = new TablePrinter(directory);
         tablePrinter.printTable();
     }
 }
