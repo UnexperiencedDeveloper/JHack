@@ -18,7 +18,7 @@ import java.util.Locale;
  * @author tmatz
  * @version 1.0
  */
-public class TabledPrinter {
+public class TablePrinter {
     private int maxUserNameLength;
     private int maxSizeLength;
     private int maxGroupNameLength;
@@ -30,7 +30,7 @@ public class TabledPrinter {
      *
      * @param children A collection of `FileObject` items to be formatted and printed.
      */
-    public TabledPrinter(Collection<FileObject> children){
+    public TablePrinter(Collection<FileObject> children){
         this.children = children;
     }
 
@@ -47,7 +47,7 @@ public class TabledPrinter {
         for (FileObject object : children) {
             maxGroupNameLength = Math.max(maxGroupNameLength, object.getFileMetaData().getFilePermission().getUserGroup().getGroupName().length());
             maxUserNameLength = Math.max(maxUserNameLength, object.getFileMetaData().getFilePermission().getUser().getUserName().length());
-            maxSizeLength = Math.max(maxSizeLength, String.valueOf(object.caluclateFileSize()).length());
+            maxSizeLength = Math.max(maxSizeLength, String.valueOf(object.getFileMetaData().getFileSize().getFileSize()).length());
         }
     }
 
@@ -58,7 +58,7 @@ public class TabledPrinter {
      * for permissions, user name, group name, file size, modification timestamp,
      * and name.
      */
-    public void printTabled(){
+    public void printTable(){
         StringBuilder stringBuilder = new StringBuilder();
         calculateWidth();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM dd HH:mm", Locale.ENGLISH);
@@ -68,11 +68,11 @@ public class TabledPrinter {
             FileMetaData metaData = object.getFileMetaData();
             String userNameSpaces = " ".repeat(maxUserNameLength - object.getFileMetaData().getFilePermission().getUser().getUserName().length());
             String groupNameSpaces = " ".repeat(maxGroupNameLength - object.getFileMetaData().getFilePermission().getUserGroup().getGroupName().length());
-            String sizeSpaces = " ".repeat(maxSizeLength - String.valueOf(object.caluclateFileSize()).length());
+            String sizeSpaces = " ".repeat(maxSizeLength - String.valueOf(object.getFileMetaData().getFileSize().getFileSize()).length());
             stringBuilder.append(metaData.getFilePermission().getPermissionString()).append(" ")
                     .append(" ").append(metaData.getFilePermission().getUser().getUserName()).append(userNameSpaces).append(" ")
                     .append(" ").append(metaData.getFilePermission().getUserGroup().getGroupName()).append(groupNameSpaces).append(" ")
-                    .append(sizeSpaces).append(object.caluclateFileSize()).append(" ")
+                    .append(" ").append(object.getFileMetaData().getFileSize().getFileSize()).append(sizeSpaces).append(" ")
                     .append(metaData.getModifiedTimeStamp().format(dateTimeFormatter)).append(" ")
                     .append(object.getName()).append(userNameSpaces).append("\n");
         }

@@ -116,7 +116,7 @@ public class LsCommand implements ICommand {
     }
 
     private void printDetails(Collection<FileObject> children){
-        TabledPrinter tabledPrinter = new TabledPrinter(children);
-        tabledPrinter.printTabled();
+        TablePrinter tablePrinter = new TablePrinter(children);
+        tablePrinter.printTable();
     }
 }
