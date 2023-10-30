@@ -11,22 +11,19 @@ import java.time.LocalDateTime;
  */
 public class FileMetaData {
     private FilePermission filePermission;
-    private String fileSize;
     private LocalDateTime createdTimeStamp, accessedTimeStamp, modifiedTimeStamp;
-
-    public FileMetaData() {
-
-    }
-    private FileMetaData(User user, FileTypeEnum fileTypeEnum){
+    private FileSize fileSize;
+    private FileMetaData(User user, FileTypeEnum fileTypeEnum, FileObject fileObject){
         // for filePermission creation
         createdTimeStamp = LocalDateTime.now();
         accessedTimeStamp = LocalDateTime.now();
         modifiedTimeStamp = LocalDateTime.now();
         filePermission = FilePermission.createPermission(user, fileTypeEnum);
+        fileSize = new FileSize(fileObject);
     }
 
-    public static FileMetaData createMetaData(User user, FileTypeEnum fileTypeEnum){
-        return new FileMetaData(user, fileTypeEnum);
+    public static FileMetaData createMetaData(User user, FileTypeEnum fileTypeEnum, FileObject fileObject){
+        return new FileMetaData(user, fileTypeEnum, fileObject);
     }
 
     public LocalDateTime getAccessedTimeStamp() {
@@ -45,10 +42,6 @@ public class FileMetaData {
         return filePermission;
     }
 
-    public String getFileSize() {
-        return fileSize;
-    }
-
     public void setFilePermission(FilePermission filePermission) {
         this.filePermission = filePermission;
     }
@@ -59,5 +52,9 @@ public class FileMetaData {
 
     public void setModifiedTimeStamp() {
         this.modifiedTimeStamp = LocalDateTime.now();
+    }
+
+    public FileSize getFileSize() {
+        return fileSize;
     }
 }

@@ -41,7 +41,7 @@ public class FileSizeCalculater {
             Directory directoryObject = (Directory) fileObject;
 
             for (FileObject children : directoryObject.getAllChildren()) {
-                totalSize += children.caluclateFileSize();
+                totalSize += children.getFileMetaData().getFileSize().getFileSize();
             }
             return totalSize;
         } else {

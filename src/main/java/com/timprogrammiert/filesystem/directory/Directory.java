@@ -47,6 +47,8 @@ public class Directory extends FileObject {
             return false;
         }else {
             children.put(childrenObject.getName(), childrenObject);
+            // Tell sizeCalculator there's something new
+            this.getFileMetaData().getFileSize().registerFileChange();
             return true;
         }
 
