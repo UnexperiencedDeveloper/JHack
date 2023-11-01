@@ -123,7 +123,8 @@ public class LsCommand implements ICommand {
     }
 
     private void printDetails(Directory directory){
-        TablePrinter tablePrinter = new TablePrinter(directory);
+        TableFormatter tableFormatter = new TableFormatter(directory);
+        TablePrinter tablePrinter = new TablePrinter(tableFormatter);
         tablePrinter.printTable();
     }
 }
