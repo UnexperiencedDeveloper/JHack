@@ -57,7 +57,7 @@ public class LsCommand implements ICommand {
                 listAllChildren(path.resolvePath(host, Directory.class));
             }
 
-            }catch (FileObjectNotFoundException | PermissionDeniedException e){
+            }catch (FileObjectNotFoundException | PermissionDeniedException | NullPointerException e){
                 throw new CommandExecutionException(commandName + ": " + e.getMessage());
             }
     }
@@ -122,7 +122,7 @@ public class LsCommand implements ICommand {
         return argList;
     }
 
-    private void printDetails(Directory directory){
+    private void printDetails(Directory directory) throws NullPointerException{
         TableFormatter tableFormatter = new TableFormatter(directory);
         TablePrinter tablePrinter = new TablePrinter(tableFormatter);
         tablePrinter.printTable();

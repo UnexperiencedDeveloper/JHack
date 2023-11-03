@@ -23,12 +23,8 @@ public class TablePrinter {
     public TablePrinter(TableFormatter tableFormatter) {
         this.tableFormatter = tableFormatter;
     }
-    public void printTable() {
-        try {
-            System.out.println(tableFormatter.getFormattedTable());
-        } catch (NullPointerException e) {
-            logger.log(Level.WARNING, e.getMessage());
-        }
+    public void printTable() throws NullPointerException{
+        System.out.println(tableFormatter.getFormattedTable());
 
     }
 }
