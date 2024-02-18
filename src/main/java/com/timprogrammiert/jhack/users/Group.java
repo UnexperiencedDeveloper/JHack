@@ -28,4 +28,7 @@ public class Group {
     public User getUser(String userName){
         return userMap.get(userName);
     }
+    public boolean hasMember(String userName){
+        return userMap.containsKey(userName);
+    }
 }

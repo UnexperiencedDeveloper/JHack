@@ -1,5 +1,6 @@
 package com.timprogrammiert.jhack.filesystem;
 
+import com.timprogrammiert.jhack.devices.OperatingSystem;
 import com.timprogrammiert.jhack.permissions.PermissionUtil;
 import com.timprogrammiert.jhack.users.User;
 
@@ -17,8 +18,10 @@ public class Filesystem {
 
     Directory rootFolder;
     Directory currentDirectory;
+    OperatingSystem operatingSystem;
 
-    public Filesystem() {
+    public Filesystem(OperatingSystem operatingSystem) {
+        this.operatingSystem = operatingSystem;
         setupFilesystem();
     }
     public Directory getRootFolder(){
@@ -34,7 +37,7 @@ public class Filesystem {
     }
 
     private void setupFilesystem(){
-        User rootUser = new User("root");
+        User rootUser = operatingSystem.getCurrentUser();
         Directory root = new Directory("/", null, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
         rootFolder = root;
         Directory var = new Directory("var", root, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));

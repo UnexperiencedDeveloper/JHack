@@ -1,11 +1,15 @@
 package com.timprogrammiert.jhack.terminal.commands;
 
 import com.timprogrammiert.jhack.devices.DeviceManager;
+import com.timprogrammiert.jhack.devices.OperatingSystem;
 import com.timprogrammiert.jhack.exceptions.FileNotFoundException;
 import com.timprogrammiert.jhack.exceptions.NotADirectoryException;
+import com.timprogrammiert.jhack.exceptions.PermissionDeniedException;
 import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
 import com.timprogrammiert.jhack.filesystem.Filesystem;
+import com.timprogrammiert.jhack.permissions.PermissionChecker;
+import com.timprogrammiert.jhack.users.User;
 import com.timprogrammiert.jhack.utils.PathResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,20 +30,31 @@ public class LsCommand implements ICommand{
     public String run(String[] args) {
         try {
             return handleArguments(new ArrayList<>(Arrays.asList(args)));
-        } catch (NotADirectoryException | FileNotFoundException e) {
+        } catch (NotADirectoryException | FileNotFoundException | PermissionDeniedException e) {
             return e.getMessage();
         }
     }
-    public String handleArguments(List<String> args) throws NotADirectoryException, FileNotFoundException {
-        args.remove("ls");
+    public String handleArguments(List<String> args) throws NotADirectoryException, FileNotFoundException, PermissionDeniedException {
         boolean detailed = args.remove("-al");
-        Filesystem filesystem = DeviceManager.getCurrentDevice().getOperatingSystem().getFilesystem();
+        OperatingSystem os = DeviceManager.getCurrentDevice().getOperatingSystem();
+        Filesystem filesystem = os.getFilesystem();
         PathResolver pathResolver = new PathResolver(filesystem);
         Directory targetDirectory = args.isEmpty()
                 ? filesystem.getCurrentDirectory()
                 : getDirectory(pathResolver.resolvePath(args.get(PATH_INDEX)));
 
+
+        // Throws PermissionDeniedException
+        checkPermission(targetDirectory, os.getCurrentUser());
+
         return detailed ? listDetailed(targetDirectory) : listNormal(targetDirectory).strip();
+    }
+
+    private void checkPermission(BaseFile fileToCheck, User user) throws PermissionDeniedException {
+        PermissionChecker pemChecker = new PermissionChecker(fileToCheck.getPermission(), user);
+        if(!pemChecker.isCanRead()){
+            throw new PermissionDeniedException(fileToCheck.getName());
+        }
     }
 
     private Directory getDirectory(BaseFile baseFile) throws NotADirectoryException {

@@ -5,6 +5,8 @@ import com.timprogrammiert.jhack.exceptions.NotADirectoryException;
 import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
 import com.timprogrammiert.jhack.filesystem.Filesystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Author: Tim
@@ -12,6 +14,7 @@ import com.timprogrammiert.jhack.filesystem.Filesystem;
  * Version: 1.0
  */
 public class PathResolver {
+    private static Logger logger = LoggerFactory.getLogger(PathResolver.class);
     Filesystem filesystem;
     public PathResolver(Filesystem filesystem) {
         this.filesystem = filesystem;
@@ -63,6 +66,7 @@ public class PathResolver {
 
             // Handle the case where the file is not found
             if (!found) {
+                logger.debug("Cant find " + pathString);
                 throw new FileNotFoundException(pathString);
             }
         }
