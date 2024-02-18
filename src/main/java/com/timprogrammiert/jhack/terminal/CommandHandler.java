@@ -91,6 +91,7 @@ public class CommandHandler {
             case "cd" -> new CdCommand();
             case "id" -> new IdCommand();
             case "chown" -> new ChownCommand();
+            case "chmod" -> new ChmodCommand();
             default -> throw new CommandDoesNotExistException(input[0]);
         };
     }

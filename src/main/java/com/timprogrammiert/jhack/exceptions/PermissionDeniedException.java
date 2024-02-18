@@ -7,6 +7,6 @@ package com.timprogrammiert.jhack.exceptions;
  */
 public class PermissionDeniedException extends Exception{
     public PermissionDeniedException(String fileName) {
-        super(String.format("cannot open '%s': Permission Denied"));
+        super(String.format("cannot open '%s': Permission Denied", fileName));
     }
 }
