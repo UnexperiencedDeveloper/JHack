@@ -11,8 +11,11 @@ import java.util.Map;
 public class Group {
     String groupName;
     Map<String, User> userMap;
+    GroupInfo groupInfo;
 
     public Group(String groupName) {
+        groupInfo = new GroupInfo(GidManager.generateUid());
+        GidManager.addGroupToList(this);
         this.groupName = groupName;
         userMap = new HashMap<>();
     }
@@ -30,5 +33,9 @@ public class Group {
     }
     public boolean hasMember(String userName){
         return userMap.containsKey(userName);
+    }
+
+    public GroupInfo getGroupInfo() {
+        return groupInfo;
     }
 }

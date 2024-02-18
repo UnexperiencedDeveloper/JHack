@@ -1,5 +1,6 @@
 package com.timprogrammiert.jhack.users;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,14 +12,19 @@ import java.util.Map;
 public class User {
     String userName;
     Map<String, Group> memberOfGroups;
+    AccountInfo accountInfo;
 
-    public User(String userName) {
+    public User(String userName, Group primaryGroup) {
+        accountInfo = new AccountInfo(UidManager.generateUid());
+        UidManager.addUserToList(this);
+
         this.userName = userName;
         memberOfGroups = new HashMap<>();
-        Group primaryGroup = new Group(userName);
         memberOfGroups.put(primaryGroup.getGroupName(), primaryGroup);
         primaryGroup.addUser(this);
     }
+
+
 
     public String getUserName() {
         return userName;
@@ -26,5 +32,16 @@ public class User {
 
     public Group getPrimaryGroup(){
         return memberOfGroups.get(userName);
+    }
+
+    public AccountInfo getAccountInfo() {
+        return accountInfo;
+    }
+
+    public Collection<Group> getAllGroups(){
+        return memberOfGroups.values();
+    }
+    public void addToGroup(Group group){
+        memberOfGroups.put(group.getGroupName(), group);
     }
 }

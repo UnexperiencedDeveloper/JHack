@@ -5,10 +5,7 @@ import com.timprogrammiert.jhack.exceptions.CommandDoesNotExistException;
 import com.timprogrammiert.jhack.filesystem.Filesystem;
 import com.timprogrammiert.jhack.filesystem.PathUtils;
 import com.timprogrammiert.jhack.gui.components.TerminalTextArea;
-import com.timprogrammiert.jhack.terminal.commands.CdCommand;
-import com.timprogrammiert.jhack.terminal.commands.ICommand;
-import com.timprogrammiert.jhack.terminal.commands.LsCommand;
-import com.timprogrammiert.jhack.terminal.commands.TestList;
+import com.timprogrammiert.jhack.terminal.commands.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,6 +89,7 @@ public class CommandHandler {
         return switch (input[0]) {
             case "ls" -> new LsCommand();
             case "cd" -> new CdCommand();
+            case "id" -> new IdCommand();
             default -> throw new CommandDoesNotExistException(input[0]);
         };
     }
