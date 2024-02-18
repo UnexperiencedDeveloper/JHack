@@ -90,6 +90,7 @@ public class CommandHandler {
             case "ls" -> new LsCommand();
             case "cd" -> new CdCommand();
             case "id" -> new IdCommand();
+            case "chown" -> new ChownCommand();
             default -> throw new CommandDoesNotExistException(input[0]);
         };
     }

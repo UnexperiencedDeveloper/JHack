@@ -2,10 +2,7 @@ package com.timprogrammiert.jhack.filesystem;
 
 import com.timprogrammiert.jhack.permissions.Permission;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Author: Tim
@@ -30,5 +27,22 @@ public class Directory extends BaseFile{
     }
     public Map<String,BaseFile> getChildMap(){
         return children;
+    }
+
+    public Collection<BaseFile> getChildrenRecursive() {
+        Collection<BaseFile> recursiveFiles = new ArrayList<>();
+        // Add the current directory itself to the collection
+        recursiveFiles.add(this);
+
+        for (BaseFile baseFile : children.values()) {
+            if (baseFile instanceof Directory directoryObject) {
+                // Recursively add child files of the subdirectory
+                recursiveFiles.addAll(directoryObject.getChildrenRecursive());
+            } else {
+                // Add non-directory files to the collection
+                recursiveFiles.add(baseFile);
+            }
+        }
+        return recursiveFiles;
     }
 }

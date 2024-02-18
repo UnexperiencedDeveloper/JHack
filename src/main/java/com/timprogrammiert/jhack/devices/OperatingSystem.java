@@ -61,6 +61,9 @@ public class OperatingSystem {
             User rootUser =  createNewUser("root");
             currentUser = rootUser;
             userMap.put(rootUser.getUserName(), rootUser);
+
+            createNewUser("test");
+
         } catch (UserAlreadyExistsException | GroupAlreadyExistsException e) {
             logger.debug("Cant craete Root User - already exists");
         }
