@@ -94,6 +94,7 @@ public class CommandHandler {
             case "chmod" -> new ChmodCommand();
             case "mkdir" -> new MkdirCommand();
             case "mv" -> new MvCommand();
+            case "cp" -> new CpCommand();
             default -> throw new CommandDoesNotExistException(input[0]);
         };
     }
