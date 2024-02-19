@@ -10,6 +10,7 @@ import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
 import com.timprogrammiert.jhack.permissions.PermissionChecker;
 import com.timprogrammiert.jhack.permissions.PermissionUtil;
+import com.timprogrammiert.jhack.utils.CommandRessources;
 import com.timprogrammiert.jhack.utils.PathResolver;
 import com.timprogrammiert.jhack.utils.RecursiveFinder;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class ChmodCommand implements ICommand{
     private String handleArguments(List<String> argList) throws NotADirectoryException, FileNotFoundException,
             InvalidArgumentsException, PermissionDeniedException {
         if(argList.size() <= 1){
-            throw new InvalidArgumentsException("Usage: chown 770 file");
+            throw new InvalidArgumentsException(CommandRessources.CHMOD_USAGE);
         }
         boolean recursive = argList.remove(RECURSIVE_TAG);
         String permissionCode = argList.getFirst();

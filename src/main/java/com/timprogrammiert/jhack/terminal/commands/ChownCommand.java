@@ -9,6 +9,7 @@ import com.timprogrammiert.jhack.filesystem.Filesystem;
 import com.timprogrammiert.jhack.permissions.PermissionChecker;
 import com.timprogrammiert.jhack.users.Group;
 import com.timprogrammiert.jhack.users.User;
+import com.timprogrammiert.jhack.utils.CommandRessources;
 import com.timprogrammiert.jhack.utils.PathResolver;
 import com.timprogrammiert.jhack.utils.RecursiveFinder;
 import org.slf4j.Logger;
@@ -45,7 +46,7 @@ public class ChownCommand implements ICommand{
         try {
             // Check for the minimum required number of arguments
             if (args.length < 2) {
-                throw new InvalidArgumentsException("Usage: chown user:group /path/to/directory");
+                throw new InvalidArgumentsException(CommandRessources.CHOWN_USAGE);
             }
 
             // Convert array to list for easy manipulation

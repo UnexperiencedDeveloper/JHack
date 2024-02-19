@@ -8,6 +8,7 @@ import com.timprogrammiert.jhack.exceptions.NotADirectoryException;
 import com.timprogrammiert.jhack.exceptions.PermissionDeniedException;
 import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
+import com.timprogrammiert.jhack.utils.CommandRessources;
 import com.timprogrammiert.jhack.utils.DirectoryCreator;
 import com.timprogrammiert.jhack.utils.PathResolver;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class MkdirCommand implements ICommand{
 
     private void handleArguments(List<String> argList) throws InvalidArgumentsException, NotADirectoryException, FileAlreadyExistsException, PermissionDeniedException {
         if(argList.isEmpty()){
-            throw new InvalidArgumentsException("Usage MKDIR STILL MISSING");
+            throw new InvalidArgumentsException(CommandRessources.MKDIR_USAGE);
         }
         String fileName = argList.getFirst();
         PathResolver pathResolver = new PathResolver(computer.getOperatingSystem().getFilesystem());

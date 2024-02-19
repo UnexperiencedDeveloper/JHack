@@ -7,6 +7,7 @@ import com.timprogrammiert.jhack.exceptions.InvalidArgumentsException;
 import com.timprogrammiert.jhack.exceptions.UserDoesNotExistException;
 import com.timprogrammiert.jhack.users.Group;
 import com.timprogrammiert.jhack.users.User;
+import com.timprogrammiert.jhack.utils.CommandRessources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,9 @@ public class IdCommand implements ICommand{
             args.add(computer.getOperatingSystem().getCurrentUser().getUserName());
         }
         try {
+            if(args.contains("-h")){
+                throw new InvalidArgumentsException(CommandRessources.ID_USAGE);
+            }
             // Check command options
             if (args.contains(USER_FLAG)) {
                 return userId(args.get(1));

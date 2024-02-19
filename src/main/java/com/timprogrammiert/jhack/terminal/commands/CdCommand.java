@@ -10,6 +10,7 @@ import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
 import com.timprogrammiert.jhack.filesystem.Filesystem;
 import com.timprogrammiert.jhack.permissions.PermissionChecker;
+import com.timprogrammiert.jhack.utils.CommandRessources;
 import com.timprogrammiert.jhack.utils.PathResolver;
 
 /**
@@ -37,7 +38,7 @@ public class CdCommand implements ICommand {
         if (args.length < 1) {
             try {
                 // Throw an exception for invalid arguments
-                throw new InvalidArgumentsException("Should Change to User HomeDir");
+                throw new InvalidArgumentsException(CommandRessources.CD_USAGE);
             } catch (InvalidArgumentsException e) {
                 // Return the exception message
                 return e.getMessage();
