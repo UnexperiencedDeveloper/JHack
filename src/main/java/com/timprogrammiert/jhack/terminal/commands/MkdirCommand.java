@@ -2,10 +2,7 @@ package com.timprogrammiert.jhack.terminal.commands;
 
 import com.timprogrammiert.jhack.devices.Computer;
 import com.timprogrammiert.jhack.devices.DeviceManager;
-import com.timprogrammiert.jhack.exceptions.FileNotFoundException;
-import com.timprogrammiert.jhack.exceptions.InvalidArgumentsException;
-import com.timprogrammiert.jhack.exceptions.NotADirectoryException;
-import com.timprogrammiert.jhack.exceptions.PermissionDeniedException;
+import com.timprogrammiert.jhack.exceptions.*;
 import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
 import com.timprogrammiert.jhack.utils.CommandRessources;
@@ -14,7 +11,6 @@ import com.timprogrammiert.jhack.utils.PathResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +29,7 @@ public class MkdirCommand implements ICommand{
         computer = DeviceManager.getCurrentDevice();
         try {
             handleArguments(argList);
-        } catch (InvalidArgumentsException | NotADirectoryException  |
+        } catch (InvalidArgumentsException | NotADirectoryException |
                  PermissionDeniedException | FileAlreadyExistsException e) {
             return e.getMessage();
         }
