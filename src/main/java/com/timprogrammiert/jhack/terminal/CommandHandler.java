@@ -93,6 +93,7 @@ public class CommandHandler {
             case "chown" -> new ChownCommand();
             case "chmod" -> new ChmodCommand();
             case "mkdir" -> new MkdirCommand();
+            case "mv" -> new MvCommand();
             default -> throw new CommandDoesNotExistException(input[0]);
         };
     }

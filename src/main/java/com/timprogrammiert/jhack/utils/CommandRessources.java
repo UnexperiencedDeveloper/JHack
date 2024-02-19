@@ -12,4 +12,5 @@ public class CommandRessources {
     public static final String CHOWN_USAGE = "USAGE CHOWN";
     public static final String ID_USAGE = "USAGE ID";
     public static final String LS_USAGE = "USAGE LS";
+    public static final String MV_USAGE = "USAGE MV";
 }

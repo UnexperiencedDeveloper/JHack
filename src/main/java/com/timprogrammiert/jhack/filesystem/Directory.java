@@ -45,4 +45,8 @@ public class Directory extends BaseFile{
         }
         return recursiveFiles;
     }
+
+    public boolean hasChild(String childName){
+        return getChildMap().containsKey(childName);
+    }
 }

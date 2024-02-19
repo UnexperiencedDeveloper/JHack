@@ -27,8 +27,15 @@ public class BaseFile {
     public Directory getParent(){
         return parent;
     }
+    public void setParentFolder(Directory parent){this.parent = parent;}
+
     public String getName(){
         return name;
+    }
+    public void setName(String newName){
+        // .remove returns the removed Object, which is in this case the Object we want to set a new Key
+        parent.getChildMap().put(newName, parent.getChildMap().remove(name));
+        name = newName;
     }
     public Permission getPermission(){
         return permission;
