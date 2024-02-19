@@ -57,6 +57,7 @@ public class ChmodCommand implements ICommand{
         }
         boolean recursive = argList.remove(RECURSIVE_TAG);
         String permissionCode = argList.getFirst();
+
         if(!(isValid(permissionCode))){throw new InvalidArgumentsException("Invalid permission Code");}
         String filePath = argList.get(FILE_PATH_INDEX);
         PathResolver pathResolver = new PathResolver(computer.getOperatingSystem().getFilesystem());

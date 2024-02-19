@@ -41,6 +41,9 @@ public class User {
     public Collection<Group> getAllGroups(){
         return memberOfGroups.values();
     }
+    public Group getSpecificGroup(String groupName){
+        return memberOfGroups.get(groupName);
+    }
     public void addToGroup(Group group){
         memberOfGroups.put(group.getGroupName(), group);
     }
