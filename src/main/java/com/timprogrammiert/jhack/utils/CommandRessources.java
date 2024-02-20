@@ -14,4 +14,5 @@ public class CommandRessources {
     public static final String LS_USAGE = "USAGE LS";
     public static final String MV_USAGE = "USAGE MV";
     public static final String CP_USAGE = "USAGE CP";
+    public static final String RM_USAGE = "USAGE RM";
 }
