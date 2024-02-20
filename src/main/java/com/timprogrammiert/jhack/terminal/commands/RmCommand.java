@@ -51,7 +51,7 @@ public class RmCommand implements ICommand{
     }
 
     private void deleteFileOrDirectory(BaseFile baseFile, boolean forceRemove)
-            throws NotADirectoryException, InvalidArgumentsException {
+            throws InvalidArgumentsException {
         if (baseFile instanceof Directory directory) {
             if (directory.getChildMap().isEmpty() || forceRemove) {
                 directory.getParent().removeChild(directory.getName());
