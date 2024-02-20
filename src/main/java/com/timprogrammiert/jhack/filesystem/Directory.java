@@ -23,6 +23,11 @@ public class Directory extends BaseFile{
         getMetaData().getFileSizeObject().setFileSize(newSize);
         updateFileSize();
     }
+
+    public void removeChild(String childToRemove){
+        children.remove(childToRemove);
+        updateFileSize();
+    }
     public BaseFile getChildByName(String name){
         return children.get(name);
     }
