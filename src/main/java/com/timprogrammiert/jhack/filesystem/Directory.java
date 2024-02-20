@@ -14,9 +14,14 @@ public class Directory extends BaseFile{
     public Directory(String name, Directory parent, Permission permission) {
         super(name, parent, permission);
         children = new HashMap<>();
+        this.metaData = new MetaData();
     }
     public void addChild(BaseFile file){
         children.put(file.name, file);
+        int childFileSize = file.getMetaData().getFileSizeObject().getFileSize();
+        int newSize = getMetaData().getFileSizeObject().getFileSize() + childFileSize;
+        getMetaData().getFileSizeObject().setFileSize(newSize);
+        updateFileSize();
     }
     public BaseFile getChildByName(String name){
         return children.get(name);
@@ -48,5 +53,23 @@ public class Directory extends BaseFile{
 
     public boolean hasChild(String childName){
         return getChildMap().containsKey(childName);
+    }
+
+    /**
+     * Recursively updates the file size of the current folder and its parent folders
+     */
+    private void updateFileSize(){
+        int newFileSize = 0;
+        getMetaData().updateModified();
+        // Calculate the total file size by summing up the sizes of all child objects
+        for (BaseFile child : getChildMap().values()){
+            newFileSize += child.getMetaData().getFileSizeObject().getFileSize();
+        }
+        getMetaData().getFileSizeObject().setFileSize(newFileSize);
+
+        // Propagate the file size update to the parent folder, if applicable
+        if(getParent() != null){
+            getParent().updateFileSize();
+        }
     }
 }

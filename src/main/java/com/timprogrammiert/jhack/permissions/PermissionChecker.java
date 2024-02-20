@@ -9,7 +9,7 @@ import com.timprogrammiert.jhack.users.User;
  */
 public class PermissionChecker {
     private final Permission permissions;
-    private User userToCheck;
+    private final User userToCheck;
     private String userPermissions;
     private String groupPermissions;
     private String otherPermissions;

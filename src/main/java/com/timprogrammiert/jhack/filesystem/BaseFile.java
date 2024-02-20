@@ -14,10 +14,12 @@ public class BaseFile {
     Directory parent;
     String name;
     Permission permission;
+    MetaData metaData;
     protected BaseFile(String name, Directory parent, Permission permission){
         this.parent = parent;
         this.name = name;
         this.permission = permission;
+        this.metaData = new MetaData();
         if(this.parent != null){
             parent.addChild(this);
             logger.debug(String.format("%s added to %s", name, parent.name));
@@ -39,6 +41,10 @@ public class BaseFile {
     }
     public Permission getPermission(){
         return permission;
+    }
+
+    public MetaData getMetaData(){
+        return metaData;
     }
 
 }

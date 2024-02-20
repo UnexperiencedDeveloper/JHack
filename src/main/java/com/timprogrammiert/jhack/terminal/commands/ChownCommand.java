@@ -102,8 +102,9 @@ public class ChownCommand implements ICommand{
      */
     private void processFileOwnership(String userName, String groupName, BaseFile targetFile, boolean recursive)
             throws InvalidArgumentsException, PermissionDeniedException, UserDoesNotExistException, GroupDoesNotExistException {
+        User currentUser = computer.getOperatingSystem().getCurrentUser();
         PermissionChecker pemChecker = new PermissionChecker(targetFile.getPermission(),
-                computer.getOperatingSystem().getCurrentUser());
+                currentUser);
 
         // Check Permissions
         // TODO - SUDO USER'S MISSING
@@ -111,6 +112,10 @@ public class ChownCommand implements ICommand{
         if(!pemChecker.isCanWrite()){throw new PermissionDeniedException(targetFile.getName());}
 
         if (groupName.isEmpty() && isValidUser(userName)) {
+            if(!isRootUser(currentUser)){
+                logger.debug("Root required for Chown");
+                throw new InvalidArgumentsException("Permission denied");
+            }
             // Change User Only
             User userToSet = computer.getOperatingSystem().getSpecificUser(userName);
             Group currentSetGroup = targetFile.getPermission().getGroup();
@@ -132,6 +137,11 @@ public class ChownCommand implements ICommand{
             // Throw an exception if arguments are invalid
             throw new InvalidArgumentsException("Usage: chown user:group /path/to/file");
         }
+    }
+
+    private boolean isRootUser(User currentUser){
+        User rootUser = computer.getOperatingSystem().getRootUser();
+        return currentUser.equals(rootUser);
     }
     /**
      * Updates ownership of the target file/directory.

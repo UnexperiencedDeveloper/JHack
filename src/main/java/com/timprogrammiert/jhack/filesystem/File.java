@@ -8,7 +8,16 @@ import com.timprogrammiert.jhack.permissions.Permission;
  * Version: 1.0
  */
 public class File extends BaseFile{
+    String content;
     public File(String name, Directory parent, Permission permission) {
         super(name, parent, permission);
+        this.content = "";
+    }
+    public void appendString(String stringToAppend){
+        content += (stringToAppend + "\n");
+    }
+
+    public String getContent(){
+        return content;
     }
 }

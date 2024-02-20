@@ -10,6 +10,7 @@ import com.timprogrammiert.jhack.filesystem.BaseFile;
 import com.timprogrammiert.jhack.filesystem.Directory;
 import com.timprogrammiert.jhack.permissions.PermissionChecker;
 import com.timprogrammiert.jhack.permissions.PermissionUtil;
+import com.timprogrammiert.jhack.users.User;
 import com.timprogrammiert.jhack.utils.CommandRessources;
 import com.timprogrammiert.jhack.utils.PathResolver;
 import com.timprogrammiert.jhack.utils.RecursiveFinder;
@@ -34,6 +35,12 @@ public class ChmodCommand implements ICommand{
     public String run(String[] args) {
         computer = DeviceManager.getCurrentDevice();
         try {
+            User currentUser = computer.getOperatingSystem().getCurrentUser();
+            User rootUser = computer.getOperatingSystem().getRootUser();
+            if(currentUser != rootUser){
+                logger.debug("Root required for Chmod");
+                throw new PermissionDeniedException("Permission denied");
+            }
             return handleArguments(new ArrayList<>(Arrays.asList(args)));
         } catch (NotADirectoryException | PermissionDeniedException | InvalidArgumentsException |
                  FileNotFoundException e) {

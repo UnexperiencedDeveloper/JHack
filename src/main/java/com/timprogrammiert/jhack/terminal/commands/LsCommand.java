@@ -155,8 +155,8 @@ public class LsCommand implements ICommand{
                 baseFile.getPermission().getUser().getUserName(),
                 baseFile.getPermission().getGroup().getGroupName(),
                 "1", // Placeholder for file count (e.g., for directories)
-                "Filesize", // Placeholder for file size information
-                "modifiedTimestamp", // Placeholder for modification timestamp
+                baseFile.getMetaData().getFileSizeObject().getFileSize(), // Placeholder for file size information
+                baseFile.getMetaData().getModifiedDate(), // Placeholder for modification timestamp
                 fileName);
     }
 

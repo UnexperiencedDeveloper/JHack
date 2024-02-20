@@ -71,7 +71,6 @@ public class CdCommand implements ICommand {
 
                 // Check permissions before changing directory
                 PermissionChecker pemChecker = new PermissionChecker(targetDirectory.getPermission(), os.getCurrentUser());
-
                 // Check if the user has execute and read permissions
                 if (!(pemChecker.isCanExecute() && pemChecker.isCanRead())) {
                     throw new PermissionDeniedException(targetDirectory.getName());

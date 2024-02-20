@@ -49,6 +49,7 @@ public class OperatingSystem {
         Group primaryGroup = createNewGroup(userName);
         User createdUser = new User(userName, primaryGroup);
         userMap.put(userName, createdUser);
+        logger.debug("Created user " + userName);
         return createdUser;
     }
 
@@ -65,7 +66,7 @@ public class OperatingSystem {
             createNewUser("test");
 
         } catch (UserAlreadyExistsException | GroupAlreadyExistsException e) {
-            logger.debug("Cant craete Root User - already exists");
+            logger.debug("Cant create Root User - already exists");
         }
 
     }
@@ -79,6 +80,7 @@ public class OperatingSystem {
         }
         Group createdGroup = new Group(groupName);
         groupMap.put(groupName, createdGroup);
+        logger.debug("Created Group: " + groupName);
         return createdGroup;
     }
     public boolean isValidGroup(String groupName){

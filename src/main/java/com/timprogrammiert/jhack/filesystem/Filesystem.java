@@ -38,10 +38,22 @@ public class Filesystem {
 
     private void setupFilesystem(){
         User rootUser = operatingSystem.getCurrentUser();
-        Directory root = new Directory("/", null, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
-        rootFolder = root;
-        Directory var = new Directory("var", root, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
-        Directory etc = new Directory("etc", root, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
-        setCurrentDirectory(root);
+        Directory baseFolder = new Directory("/", null, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        rootFolder = baseFolder;
+        Directory var = new Directory("var", baseFolder, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        Directory log = new Directory("log", var, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+
+
+        Directory etc = new Directory("etc", baseFolder, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        Directory sysconfig = new Directory("sysconfig", etc, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        Directory network = new Directory("network", etc, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+
+        Directory sbin = new Directory("sbin", baseFolder, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        Directory tmp = new Directory("tmp", baseFolder, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        Directory root = new Directory("etc", baseFolder, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+        Directory bin = new Directory("bin", root, PermissionUtil.createDefaultDirectoryPermission(rootUser, rootUser.getPrimaryGroup()));
+
+
+        setCurrentDirectory(baseFolder);
     }
 }
